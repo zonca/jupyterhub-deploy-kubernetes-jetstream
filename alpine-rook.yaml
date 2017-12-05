@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: alpine
+  namespace: default
+spec:
+  containers:
+  - image: alpine:3.2
+    command:
+      - /bin/sh
+      - "-c"
+      - "sleep 60m"
+    imagePullPolicy: IfNotPresent
+    name: alpine
+    volumeMounts:
+    - name: alpine-volume
+      mountPath: /data/
+  volumes:
+  - name: alpine-volume
+    persistentVolumeClaim:
+      claimName: alpine-pv-claim
+  restartPolicy: Never
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: alpine-pv-claim
+  annotations:
+    volume.beta.kubernetes.io/storage-class: rook-block
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
