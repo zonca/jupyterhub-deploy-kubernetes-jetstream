@@ -33,6 +33,3 @@ ingress:
    - hosts:
       - js-xxx-xxx.jetstream-cloud.org
      secretName: kubelego-tls-jupyterhub
-
-prePuller:
-  enabled: false
