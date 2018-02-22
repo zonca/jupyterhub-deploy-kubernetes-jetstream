@@ -25,3 +25,7 @@ config:
   ## if no ingress class is specified
   ##
   LEGO_DEFAULT_INGRESS_CLASS: nginx
+
+## rbac creates the correct permissions
+rbac:
+  create: true
