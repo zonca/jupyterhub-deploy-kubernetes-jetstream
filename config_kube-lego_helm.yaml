@@ -1,0 +1,27 @@
+## kube-lego configuration
+## Ref: https://github.com/jetstack/kube-lego
+##
+config:
+  ## Email address to use for registration with Let's Encrypt
+  ##
+  LEGO_EMAIL: zonca@sdsc.edu
+
+  ## Let's Encrypt API endpoint
+  ## Production: https://acme-v01.api.letsencrypt.org/directory
+  ## Staging: https://acme-staging.api.letsencrypt.org/directory
+  ##
+  LEGO_URL: https://acme-v01.api.letsencrypt.org/directory
+
+  ## Specify which ingress class to watch
+  ##
+  LEGO_SUPPORTED_INGRESS_CLASS: nginx
+
+  ## Specify which ingress provider should be watched
+  ## nginx and gce are the only two options presently
+  ##
+  LEGO_SUPPORTED_INGRESS_PROVIDER: nginx
+
+  ## Specify what ingress class should something be
+  ## if no ingress class is specified
+  ##
+  LEGO_DEFAULT_INGRESS_CLASS: nginx
