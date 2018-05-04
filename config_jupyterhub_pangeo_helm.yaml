@@ -1,0 +1,40 @@
+hub:
+  # output of first execution of 'openssl rand -hex 32'
+  cookieSecret: ""
+  db:
+    type: sqlite-pvc
+    pvc:
+      accessModes:
+        - ReadWriteOnce
+      storage: 1Gi
+      storageClassName: rook-block
+
+proxy:
+  # output of second execution of 'openssl rand -hex 32'
+  secretToken: ""
+
+singleuser:
+  # from https://github.com/pangeo-data/pangeo/blob/master/gce/jupyter-config.yaml
+  image:
+    name: daskdev/pangeo-notebook
+    tag: 2018-02-22
+  cmd: ['start-singleuser.sh']
+  memory:
+    guarantee: 1G
+    limit: 2G
+  storage:
+    type: dynamic
+    capacity: 1Gi
+    dynamic:
+      storageClass: rook-block
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/tls-acme: "true"
+  hosts:
+    - js-xxx-xxx.jetstream-cloud.org
+  tls:
+   - hosts:
+      - js-xxx-xxx.jetstream-cloud.org
+     secretName: kubelego-tls-jupyterhub
