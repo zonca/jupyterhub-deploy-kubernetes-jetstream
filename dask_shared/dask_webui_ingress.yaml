@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/tls-acme: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/add-base-url: "true"
+  name: dask
+  namespace: pangeo
+spec:
+  rules:
+  - host: js-xxx-xxx.jetstream-cloud.org
+    http:
+      paths:
+      - backend:
+          serviceName: dask-scheduler
+          servicePort: 80
+        path: /dask
+  tls:
+  - hosts:
+    - js-xxx-xxx.jetstream-cloud.org
+    secretName: kubelego-tls-jupyterhub
