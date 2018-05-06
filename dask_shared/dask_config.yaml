@@ -36,11 +36,11 @@ worker:
       value: s3fs xarray --upgrade
   resources:
     limits:
-      cpu: 1.5
-      memory: "1G"
+      cpu: 2
+      memory: "2G"
     requests:
-      cpu: 1.5
-      memory: "1G"
+      cpu: 2
+      memory: "2G"
 
 jupyter:
   name: jupyter
