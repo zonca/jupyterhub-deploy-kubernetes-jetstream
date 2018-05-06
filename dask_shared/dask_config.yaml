@@ -26,22 +26,21 @@ worker:
     tag: "0.17.1"
     pullPolicy: IfNotPresent
   replicas: 3
-  aptPackages: >-
   default_resources:  # overwritten by resource limits if they exist
     cpu: 1
     memory: "4GiB"
   env:
-    # - name: EXTRA_CONDA_PACKAGES
-    #   value: numba xarray -c conda-forge
-    # - name: EXTRA_PIP_PACKAGES
-    #   value: s3fs dask-ml --upgrade
-  resources: {}
+    - name: EXTRA_CONDA_PACKAGES
+      value: numba xarray -c conda-forge --yes
+    - name: EXTRA_PIP_PACKAGES
+      value: s3fs xarray --upgrade
+  resources:
     limits:
-      cpu: 1
-      memory: 1G
+      cpu: 1.5
+      memory: "1G"
     requests:
-      cpu: 1
-      memory: 1G
+      cpu: 1.5
+      memory: "1G"
 
 jupyter:
   name: jupyter
