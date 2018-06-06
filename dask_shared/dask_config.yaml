@@ -25,22 +25,20 @@ worker:
     repository: "daskdev/dask"
     tag: "0.17.1"
     pullPolicy: IfNotPresent
-  replicas: 1
+  replicas: 4
   default_resources:  # overwritten by resource limits if they exist
     cpu: 1
     memory: "4GiB"
   env:
     - name: EXTRA_CONDA_PACKAGES
-      value: zarr xarray==0.10.1 -c conda-forge --yes
-    - name: EXTRA_PIP_PACKAGES
-      value: s3fs --upgrade
+      value: zarr s3fs xarray==0.10.1 -c conda-forge --yes
   resources:
     limits:
-      cpu: 6
-      memory: "12G"
+      cpu: 3
+      memory: "7G"
     requests:
-      cpu: 6
-      memory: "12G"
+      cpu: 3
+      memory: "7G"
 
 jupyter:
   name: jupyter
