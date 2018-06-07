@@ -14,6 +14,11 @@ proxy:
   secretToken: ""
 
 singleuser:
+  # from https://github.com/pangeo-data/pangeo/blob/master/gce/jupyter-config.yaml
+  image:
+    name: daskdev/pangeo-notebook
+    tag: 2018-02-22
+  cmd: ['start-singleuser.sh']
   memory:
     guarantee: 1G
     limit: 2G
