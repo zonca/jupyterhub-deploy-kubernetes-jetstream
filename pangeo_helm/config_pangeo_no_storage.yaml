@@ -1,0 +1,38 @@
+jupyterhub:
+        hub:
+          # output of first execution of 'openssl rand -hex 32'
+          cookieSecret: ""
+          db:
+            type: sqlite-memory
+
+        proxy:
+          # output of second execution of 'openssl rand -hex 32'
+          secretToken: ""
+
+        singleuser:
+          # from https://github.com/pangeo-data/pangeo/blob/master/gce/jupyter-config.yaml
+          image:
+            name: pangeo/notebook
+            tag: e02bc75c40df01454dd01bd6ae55e0213ada7563
+          defaultUrl: "/lab"
+          serviceAccountName: daskkubernetes
+          # very small limits for testing on small instances
+          memory:
+            guarantee: 500M 
+            limit: 1G
+          cpu:
+            guarantee: "0.3"
+            limit: "1"
+          storage:
+            type: none
+
+        ingress:
+          enabled: true
+          annotations:
+            kubernetes.io/tls-acme: "true"
+          hosts:
+            - js-xxx-xxx.jetstream-cloud.org
+          tls:
+           - hosts:
+              - js-xxx-xxx.jetstream-cloud.org
+             secretName: kubelego-tls-jupyterhub
