@@ -1,0 +1,15 @@
+hub:
+  db:
+    type: sqlite-pvc
+    pvc:
+      accessModes:
+        - ReadWriteOnce
+      storage: 1Gi
+      storageClassName: cinder
+
+singleuser:
+  storage:
+    type: dynamic
+    capacity: 1Gi
+    dynamic:
+      storageClass: cinder
