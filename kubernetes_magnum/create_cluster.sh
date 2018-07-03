@@ -7,7 +7,7 @@ DOCKER_VOLUME_SIZE_GB=10
 N_MASTER=1
 N_NODES=1
 
-openstack coe cluster create --cluster-template k8s_template \
+openstack coe cluster create --cluster-template k8s_cluster_template \
     --master-count $N_MASTER --node-count $N_NODES \
     --keypair comet \
     --master-flavor $MASTER_FLAVOR --flavor $FLAVOR \
