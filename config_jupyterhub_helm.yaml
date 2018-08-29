@@ -1,6 +1,4 @@
 hub:
-  # output of first execution of 'openssl rand -hex 32'
-  cookieSecret: ""
   db:
     type: sqlite-pvc
     pvc:
@@ -9,9 +7,6 @@ hub:
       storage: 1Gi
       storageClassName: rook-block
 
-proxy:
-  # output of second execution of 'openssl rand -hex 32'
-  secretToken: ""
 
 singleuser:
   memory:
@@ -27,9 +22,3 @@ ingress:
   enabled: true
   annotations:
     kubernetes.io/tls-acme: "true"
-  hosts:
-    - js-xxx-xxx.jetstream-cloud.org
-  tls:
-   - hosts:
-      - js-xxx-xxx.jetstream-cloud.org
-     secretName: kubelego-tls-jupyterhub
