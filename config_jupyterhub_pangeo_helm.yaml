@@ -2,12 +2,19 @@ hub:
   # output of first execution of 'openssl rand -hex 32'
   cookieSecret: ""
   db:
-    type: sqlite-pvc
-    pvc:
-      accessModes:
-        - ReadWriteOnce
-      storage: 1Gi
-      storageClassName: rook-block
+    type: sqlite-memory
+  extraConfig:
+    customPodHook: |
+        from kubernetes import client
+        def modify_pod_hook(spawner, pod):
+            pod.spec.containers[0].security_context = client.V1SecurityContext(
+                privileged=True,
+                capabilities=client.V1Capabilities(
+                    add=['SYS_ADMIN']
+                )
+            )
+            return pod
+        c.KubeSpawner.modify_pod_hook = modify_pod_hook
 
 proxy:
   # output of second execution of 'openssl rand -hex 32'
