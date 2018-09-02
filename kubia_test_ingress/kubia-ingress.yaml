@@ -1,0 +1,13 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: kubia
+spec:
+  rules:
+  - host: js-168-71.jetstream-cloud.org
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: kubia
+          servicePort: 80
