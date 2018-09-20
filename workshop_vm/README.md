@@ -14,3 +14,12 @@ Edit and run:
 
     bash create_users.sh
     sudo bash create_passwords_call_with_sudo.sh
+
+XSEDE password is not used, any password is fine for SSH access
+TACC password is needed for OpenStack access,
+
+## Install required software
+
+    sudo apt install python3-openstackclient ansible
+
+Copy the terraform binary to `/usr/local/bin`
