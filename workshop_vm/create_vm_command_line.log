@@ -1,0 +1,28 @@
+## NETWORKING
+
+openstack network create ${OS_USERNAME}-api-net
+openstack subnet create --network ${OS_USERNAME}-api-net --subnet-range 10.0.0.0/24 ${OS_USERNAME}-api-subnet1
+openstack router create ${OS_USERNAME}-api-router
+openstack router add subnet ${OS_USERNAME}-api-router ${OS_USERNAME}-api-subnet1
+openstack router set --external-gateway public ${OS_USERNAME}-api-router
+openstack security group create --description "ssh & icmp enabled" ${OS_USERNAME}-global-ssh
+openstack security group rule create --protocol tcp --dst-port 22:22 --remote-ip 0.0.0.0/0 ${OS_USERNAME}-global-ssh
+openstack security group rule create --protocol icmp ${OS_USERNAME}-global-ssh
+
+## KEYPAIR
+openstack keypair create --public-key ~/.ssh/id_rsa.pub ${OS_USERNAME}-api-key
+
+## IMAGE Ubuntu 18.04 API version 18 September 2018
+IMAGE=8f5475bd-a1bd-49de-815e-0b0a77342d87
+openstack server create ${OS_USERNAME}-api-U-1 \
+    --flavor m1.medium \
+    --image $IMAGE \
+    --key-name ${OS_USERNAME}-api-key \
+    --security-group ${OS_USERNAME}-global-ssh \
+    --nic net-id=${OS_USERNAME}-api-net
+
+## PUBLIC IP
+openstack floating ip create public
+# save the created floating ip in IP
+IP=
+openstack server add floating ip ${OS_USERNAME}-api-U-1 $IP
