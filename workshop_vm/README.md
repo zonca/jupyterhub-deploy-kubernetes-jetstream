@@ -20,10 +20,14 @@ TACC password is needed for OpenStack access,
 
 ## Install required software
 
-    sudo apt install python3-openstackclient ansible
+    sudo apt install python3-openstackclient
 
 Copy the terraform binary to `/usr/local/bin`
 
 Clone `kubespray`:
 
+    sudo pip install ansible
     sudo pip install -r requirements.txt
+
+**DO NOT INSTALL** ansible with APT, otherwise the search path is different than
+its modules installed with `pip`.
