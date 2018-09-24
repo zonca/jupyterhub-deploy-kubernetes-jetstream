@@ -8,10 +8,7 @@ proxy:
   secretToken: \"$(openssl rand -hex 32)\"
 
 ingress:
+  enabled: true
   hosts:
     - $(hostname)
-  tls:
-   - hosts:
-      - $(hostname)
-     secretName: kubelego-tls-jupyterhub
 " > secrets.yaml
