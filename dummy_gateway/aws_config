@@ -1,0 +1,4 @@
+[default]
+region=RegionOne
+aws_access_key_id=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+aws_secret_access_key=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
