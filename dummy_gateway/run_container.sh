@@ -1,1 +1,1 @@
-docker run -d -p 80:8000 gateway
+docker run -d --env-file openrc.sh --name gateway -p 80:8000 gateway
