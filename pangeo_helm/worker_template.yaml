@@ -1,0 +1,27 @@
+metadata:
+spec:
+  restartPolicy: Never
+  containers:
+  - args:
+      - dask-worker
+      - --nthreads
+      - '2'
+      - --no-bokeh
+      - --memory-limit
+      - 300MB
+      - --death-timeout
+      - '60'
+    image: zonca/pangeo_notebook_rsignell:latest
+    name: dask-worker
+    securityContext:
+      capabilities:
+        add: [SYS_ADMIN]
+      privileged: true
+
+    resources:
+      limits:
+        cpu: ".1"
+        memory: 300M
+      requests:
+        cpu: ".1"
+        memory: 300M
