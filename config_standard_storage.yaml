@@ -13,8 +13,8 @@ singleuser:
     guarantee: 500M
     limit: 1G
   cpu:
-    guarantee: "0.3"
-    limit: "1"
+    guarantee: 0.3
+    limit: 1
   storage:
     type: dynamic
     capacity: 1Gi
