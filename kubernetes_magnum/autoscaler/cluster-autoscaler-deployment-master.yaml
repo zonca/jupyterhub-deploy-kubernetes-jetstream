@@ -31,7 +31,7 @@ spec:
       serviceAccountName: cluster-autoscaler-account
       containers:
         - name: cluster-autoscaler
-          image: thartland/magnum-autoscaler:v1.0
+          image: zonca/k8s-cluster-autoscaler-jetstream:b1c75e7
           imagePullPolicy: Always
           command:
             - ./cluster-autoscaler
