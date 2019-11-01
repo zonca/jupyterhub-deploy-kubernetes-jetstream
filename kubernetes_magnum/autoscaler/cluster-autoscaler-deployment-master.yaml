@@ -39,6 +39,8 @@ spec:
             - --cluster-name=k8s
             - --cloud-config=/config/cloud-config
             - --cloud-provider=magnum
+            - --scale-down-delay-after-add=1m
+            - --scale-down-unneeded-time=1m
             - --nodes=1:5:DefaultNodeGroup
           volumeMounts:
             - name: cloud-config
