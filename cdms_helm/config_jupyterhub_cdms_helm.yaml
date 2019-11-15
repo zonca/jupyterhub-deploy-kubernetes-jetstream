@@ -26,8 +26,8 @@ jupyterhub:
       dynamic:
         storageClass: standard
      image:
-      name: zonca/pangeo_notebook_rsignell
-      tag: latest
+      name: supercdms/cdms-jupyterlab
+      tag: 0.7b
      defaultUrl: "/lab"
      cmd: jupyter-labhub
      serviceAccountName: daskkubernetes
