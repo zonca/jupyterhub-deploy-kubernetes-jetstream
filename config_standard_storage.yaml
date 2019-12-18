@@ -20,3 +20,5 @@ singleuser:
     capacity: 1Gi
     dynamic:
       storageClass: standard
+  # default is 300s, sometimes Jetstream volumes are slow to attach
+  startTimeout: 600
