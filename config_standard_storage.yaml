@@ -6,6 +6,14 @@ hub:
         - ReadWriteOnce
       storage: 1Gi
       storageClassName: standard
+  # run only on master nodes
+  nodeSelector:
+        node-role.kubernetes.io/master: ""
+
+proxy:
+  # run only on master nodes
+  nodeSelector:
+        node-role.kubernetes.io/master: ""
 
 singleuser:
   # very small limits for testing on small instances
