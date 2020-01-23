@@ -1,7 +1,6 @@
-# Deploy JupyterHub on top of Kubernetes on Jetstream
+# Deploy JupyterHub for CDMS on Jetstream
 
-Configuration files for the tutorials available on my blog <https://zonca.github.io/tag/jetstream.html>
 
-The recommended deployment strategy is via Magnum, see the [tutorial](https://zonca.github.io/2019/06/kubernetes-jupyterhub-jetstream-magnum.html), which also supports autoscaling, see the [autoscaling tutorial](https://zonca.github.io/2019/09/kubernetes-jetstream-autoscaler.html).
-
-The other option, which provides a most customizable setup but which is longer to deploy and does not support autoscaling, is via Kubespray, see the [deployment with Kubespray tutorial](https://zonca.github.io/2019/02/kubernetes-jupyterhub-jetstream-kubespray.html).
+* Basic deployment with Magnum, see the [tutorial](https://zonca.github.io/2019/06/kubernetes-jupyterhub-jetstream-magnum.html), configuration files in the `kubernetes_magnum/` folder
+* Will also deploy autoscaling, see the [autoscaling tutorial](https://zonca.github.io/2019/09/kubernetes-jetstream-autoscaler.html).
+* Single user image: `supercdms/cdms-jupyterlab:1.8b`, [Dockerfile](https://gitlab.com/supercdms/CompInfrastructure/cdms-jupyterlab/blob/master/Dockerfile), [Docker Hub repository](https://hub.docker.com/r/supercdms/cdms-jupyterlab/tags)
