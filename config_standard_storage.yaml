@@ -28,5 +28,10 @@ singleuser:
     capacity: 5Gi
     dynamic:
       storageClass: standard
+  image:
+    name: supercdms/cdms-jupyterlab
+    tag: 0.7b
+  defaultUrl: "/lab"
+  cmd: jupyter-labhub
   # default is 300s, sometimes Jetstream volumes are slow to attach
   startTimeout: 600
