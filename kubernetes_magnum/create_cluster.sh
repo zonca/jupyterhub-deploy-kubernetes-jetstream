@@ -1,7 +1,7 @@
 # we can override the default values of the template
 FLAVOR="m1.xlarge"
 MASTER_FLAVOR="m1.medium"
-DOCKER_VOLUME_SIZE_GB=10
+DOCKER_VOLUME_SIZE_GB=20
 KEYPAIR=comet
 
 # number of instances
