@@ -11,4 +11,6 @@ openstack coe cluster template create --coe kubernetes \
     --floating-ip-enabled \
     --labels cloud-provider-enabled=true \
     --volume-driver cinder \
+    --docker-storage-driver overlay2 \
+    --docker-volume-size 20 \
     k8s_cluster_template
