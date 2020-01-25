@@ -31,10 +31,9 @@ singleuser:
     dynamic:
       storageClass: standard
   image:
-    name: supercdms/cdms-jupyterlab
-    tag: 1.8b
-  cmd: /opt/rh/rh-python36/root/usr/bin/jupyter-labhub
-  startTimeout: 900
+    name: "slaclab/slac-jupyterhub"
+    tag: "20191203.0"
+  cmd: /opt/slac/jupyterlab/runlab.sh
   defaultUrl: "/lab"
   # default is 300s, sometimes Jetstream volumes are slow to attach
   startTimeout: 600
