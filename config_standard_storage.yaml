@@ -31,8 +31,8 @@ singleuser:
     dynamic:
       storageClass: standard
   image:
-    name: "slaclab/slac-jupyterhub"
-    tag: "20191203.0"
+    name: "supercdms/cdms-jupyterlab"
+    tag: "1.8b"
   cmd: /opt/slac/jupyterlab/runlab.sh
   defaultUrl: "/lab"
   # default is 300s, sometimes Jetstream volumes are slow to attach
