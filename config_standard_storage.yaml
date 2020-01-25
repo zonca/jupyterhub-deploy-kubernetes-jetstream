@@ -31,7 +31,8 @@ singleuser:
   image:
     name: supercdms/cdms-jupyterlab
     tag: 1.8b
+  cmd: /opt/rh/rh-python36/root/usr/bin/jupyter-labhub
+  startTimeout: 900
   defaultUrl: "/lab"
-  cmd: jupyter-labhub
   # default is 300s, sometimes Jetstream volumes are slow to attach
   startTimeout: 600
