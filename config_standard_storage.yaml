@@ -9,6 +9,8 @@ hub:
   # run only on master nodes
   nodeSelector:
         node-role.kubernetes.io/master: ""
+  extraConfig: |
+    c.Spawner.http_timeout = 90
 
 proxy:
   # run only on master nodes
