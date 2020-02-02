@@ -5,7 +5,7 @@ metadata:
   namespace: default
 spec:
   volumes:
-      - name: cvmfs-volume
+      - name: cvmfs-cache-volume
         persistentVolumeClaim:
           claimName: cvmfs-pv-claim
   containers:
@@ -13,8 +13,8 @@ spec:
         imagePullPolicy: IfNotPresent
         name: cvmfs-client
         volumeMounts:
-            - name: cvmfs-volume
-              mountPath: /cvmfs/
+            - name: cvmfs-cache-volume
+              mountPath: /var/lib/cvmfs
         securityContext:
             privileged: true
   restartPolicy: Never
