@@ -1,0 +1,64 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cvmfs
+  namespace: default
+  labels:
+    role: nfs
+spec:
+  volumes:
+      - name: cvmfs-cache-volume
+        persistentVolumeClaim:
+          claimName: cvmfs-pv-claim
+  restartPolicy: Never
+  containers:
+      - image: zonca/cvmfs-client
+        imagePullPolicy: IfNotPresent
+        name: cvmfs-client
+        volumeMounts:
+            - name: cvmfs-cache-volume
+              mountPath: /var/lib/cvmfs
+        securityContext:
+            privileged: true
+      - image: itsthenetwork/nfs-server-alpine
+        imagePullPolicy: IfNotPresent
+        name: nfs-server
+        volumeMounts:
+            - name: cvmfs-cache-volume
+              mountPath: /nfsshare
+        env:
+            - name: SHARED_DIRECTORY
+              value: /nfsshare
+            - name: READ_ONLY
+              value: ""
+        securityContext:
+            privileged: true
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: cvmfs-pv-claim
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard
+  resources:
+    requests:
+      storage: 20Gi
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: nfs-service
+spec:
+  selector:
+    role: nfs
+  ports:
+    # Open the ports required by the NFS server
+    - name: tcp-2049
+      port: 2049
+      protocol: TCP
+    - name: udp-111
+      port: 111
+      protocol: UDP
