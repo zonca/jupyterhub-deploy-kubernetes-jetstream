@@ -13,7 +13,7 @@ spec:
   restartPolicy: Never
   containers:
       - image: zonca/cvmfs-client
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         name: cvmfs-client
         volumeMounts:
             - name: cvmfs-cache-volume
