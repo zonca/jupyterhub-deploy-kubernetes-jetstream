@@ -9,6 +9,9 @@ spec:
   volumes:
       - name: cvmfs-cache-volume
         persistentVolumeClaim:
+          claimName: cvmfs-cache-pv-claim
+      - name: cvmfs-volume
+        persistentVolumeClaim:
           claimName: cvmfs-pv-claim
   restartPolicy: Never
   containers:
@@ -18,13 +21,15 @@ spec:
         volumeMounts:
             - name: cvmfs-cache-volume
               mountPath: /var/lib/cvmfs
+            - name: cvmfs-volume
+              mountPath: /cvmfs
         securityContext:
             privileged: true
       - image: itsthenetwork/nfs-server-alpine
         imagePullPolicy: IfNotPresent
         name: nfs-server
         volumeMounts:
-            - name: cvmfs-cache-volume
+            - name: cvmfs-volume
               mountPath: /nfsshare
         env:
             - name: SHARED_DIRECTORY
@@ -38,6 +43,19 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: cvmfs-pv-claim
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard
+  resources:
+    requests:
+      storage: 20Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: cvmfs-cache-pv-claim
   namespace: default
 spec:
   accessModes:
