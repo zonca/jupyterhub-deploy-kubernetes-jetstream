@@ -10,47 +10,23 @@ spec:
       - name: cvmfs-cache-volume
         persistentVolumeClaim:
           claimName: cvmfs-cache-pv-claim
-      - name: cvmfs-volume
-        persistentVolumeClaim:
-          claimName: cvmfs-pv-claim
   restartPolicy: Never
   containers:
       - image: zonca/cvmfs-client
         imagePullPolicy: Always
-        name: cvmfs-client
+        name: cvmfs-client-nfs
         volumeMounts:
             - name: cvmfs-cache-volume
               mountPath: /var/lib/cvmfs
-            - name: cvmfs-volume
-              mountPath: /cvmfs
         securityContext:
             privileged: true
-      - image: itsthenetwork/nfs-server-alpine
-        imagePullPolicy: IfNotPresent
-        name: nfs-server
-        volumeMounts:
-            - name: cvmfs-volume
-              mountPath: /nfsshare
         env:
             - name: SHARED_DIRECTORY
-              value: /nfsshare
+              value: /cvmfs
             - name: READ_ONLY
               value: ""
         securityContext:
             privileged: true
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: cvmfs-pv-claim
-  namespace: default
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: standard
-  resources:
-    requests:
-      storage: 20Gi
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
