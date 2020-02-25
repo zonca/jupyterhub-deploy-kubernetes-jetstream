@@ -58,3 +58,18 @@ spec:
     - name: udp-111
       port: 111
       protocol: UDP
+    - name: tcp-111
+      port: 111
+      protocol: TCP
+    - name: tcp-32803
+      port: 32803
+      protocol: TCP
+    - name: udp-32769
+      port: 32769
+      protocol: UDP
+    - name: udp-892
+      port: 892
+      protocol: UDP
+    - name: tcp-892
+      port: 892
+      protocol: TCP
