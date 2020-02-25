@@ -25,6 +25,8 @@ spec:
               value: /cvmfs
             - name: READ_ONLY
               value: ""
+            - name: SYNC
+              value: ""
         securityContext:
             privileged: true
 ---
