@@ -10,13 +10,16 @@ spec:
           claimName: cvmfs-pv-claim
   containers:
       - image: zonca/cvmfs-client
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         name: cvmfs-client
         volumeMounts:
             - name: cvmfs-cache-volume
               mountPath: /var/lib/cvmfs
         securityContext:
             privileged: true
+        env:
+            - name: CVMFS_REPOSITORIES
+              value: "config-osg.opensciencegrid.org cdms.opensciencegrid.org sft.cern.ch geant4.cern.ch"
   restartPolicy: Never
 ---
 apiVersion: v1

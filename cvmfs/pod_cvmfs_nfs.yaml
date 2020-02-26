@@ -10,19 +10,26 @@ spec:
       - name: cvmfs-cache-volume
         persistentVolumeClaim:
           claimName: cvmfs-cache-pv-claim
+      - name: cvmfs-folder
+        persistentVolumeClaim:
+          claimName: cvmfs-folder-claim
   restartPolicy: Never
   containers:
-      - image: zonca/cvmfs-client
+      - image: zonca/cvmfs-client-nfs
         imagePullPolicy: Always
         name: cvmfs-client-nfs
         volumeMounts:
             - name: cvmfs-cache-volume
               mountPath: /var/lib/cvmfs
+            # This is not actually storing any data, it is only the root folder for NFS sharing
+            # and cannot be on Docker's overlayFS, so using a small volume.
+            - name: cvmfs-folder
+              mountPath: /cvmfs
         securityContext:
             privileged: true
         env:
-            - name: SHARED_DIRECTORY
-              value: /cvmfs
+            - name: CVMFS_REPOSITORIES
+              value: "config-osg.opensciencegrid.org cdms.opensciencegrid.org sft.cern.ch geant4.cern.ch"
             - name: READ_ONLY
               value: ""
             - name: SYNC
@@ -42,6 +49,19 @@ spec:
   resources:
     requests:
       storage: 20Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: cvmfs-folder-claim
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard
+  resources:
+    requests:
+      storage: 1Gi
 ---
 kind: Service
 apiVersion: v1
