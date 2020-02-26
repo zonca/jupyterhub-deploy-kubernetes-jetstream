@@ -70,6 +70,8 @@ metadata:
 spec:
   selector:
     role: nfs
+  # NFS volume does not support DNS, so choosing a IP
+  clusterIP: 10.254.77.77
   ports:
     # Open the ports required by the NFS server
     - name: tcp-2049
