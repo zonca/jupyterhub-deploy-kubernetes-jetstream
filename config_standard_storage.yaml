@@ -30,6 +30,15 @@ singleuser:
     capacity: 5Gi
     dynamic:
       storageClass: standard
+    extraVolumes:
+        - name: cvmfs-nfs-volume
+          nfs:
+            server: 10.254.77.77
+            path: /
+    extraVolumeMounts:
+        - name: cvmfs-nfs-volume
+          mountPath: /cvmfs
+          readOnly: true
   image:
     name: "zonca/docker-jupyter-cdms-light"
     tag: "latest"
