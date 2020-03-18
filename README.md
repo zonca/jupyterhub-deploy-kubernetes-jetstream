@@ -32,7 +32,8 @@ As examples, checkout the `Dockerfile` files in <https://github.com/zonca/jupyte
 
 ## Software stack via CVMFS
 
-[Issue with the discussion about integrating CVMFS](https://github.com/det-lab/jupyterhub-deploy-kubernetes-jetstream/issues/4)
+* [Issue with the discussion about integrating CVMFS](https://github.com/det-lab/jupyterhub-deploy-kubernetes-jetstream/issues/4)
+* [Tutorial for the deployment of CVMFS on top of Kubernetes](https://zonca.dev/2020/02/cvmfs-kubernetes.html)
 
 The software stack is based on <http://lcgdocs.web.cern.ch/lcgdocs/lcgreleases/introduction/>
 
