@@ -1,8 +1,8 @@
 # we can override the default values of the template
-FLAVOR="m1.medium"
-MASTER_FLAVOR=$FLAVOR
-DOCKER_VOLUME_SIZE_GB=10
-KEYPAIR=${OS_USERNAME}-api-key
+FLAVOR="m1.xlarge"
+MASTER_FLAVOR="m1.medium"
+DOCKER_VOLUME_SIZE_GB=40
+KEYPAIR=comet
 
 # number of instances
 N_MASTER=1

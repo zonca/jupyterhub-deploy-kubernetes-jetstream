@@ -1,0 +1,47 @@
+jupyterhub:
+   prePuller:
+     hook:
+        enabled: false
+
+   hub:
+     db:
+      type: sqlite-pvc
+      pvc:
+        accessModes:
+         - ReadWriteOnce
+        storage: 1Gi
+        storageClassName: standard
+
+   singleuser:
+     # very small limits for testing on small instances
+     memory:
+      guarantee: 500M
+      limit: 1G
+     cpu:
+      guarantee: "0.3"
+      limit: "1"
+     storage:
+      type: dynamic
+      capacity: 1Gi
+      dynamic:
+        storageClass: standard
+     image:
+      name: supercdms/cdms-jupyterlab
+      tag: 0.7b
+     defaultUrl: "/lab"
+     cmd: jupyter-labhub
+     serviceAccountName: daskkubernetes
+
+   # from secrets.yaml
+
+   hub:
+     cookieSecret: ""
+
+   proxy:
+     secretToken: ""
+
+   ingress:
+     enabled: true
+     hosts:
+      - js-XXX-YYY.jetstream-cloud.org
+

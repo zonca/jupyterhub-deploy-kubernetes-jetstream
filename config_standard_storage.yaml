@@ -9,6 +9,8 @@ hub:
   # run only on master nodes
   nodeSelector:
         node-role.kubernetes.io/master: ""
+  extraConfig: |
+    c.Spawner.http_timeout = 90
 
 proxy:
   # run only on master nodes
@@ -18,15 +20,28 @@ proxy:
 singleuser:
   # very small limits for testing on small instances
   memory:
-    guarantee: 500M
-    limit: 1G
+    guarantee: 10G
+    limit: 10G
   cpu:
-    guarantee: 0.3
-    limit: 1
+    guarantee: 4
+    limit: 10
   storage:
     type: dynamic
-    capacity: 1Gi
+    capacity: 5Gi
     dynamic:
       storageClass: standard
+    extraVolumes:
+        - name: cvmfs-nfs-volume
+          nfs:
+            server: 10.254.77.77
+            path: /
+    extraVolumeMounts:
+        - name: cvmfs-nfs-volume
+          mountPath: /cvmfs
+          readOnly: true
+  image:
+    name: "zonca/docker-jupyter-cdms-light"
+    tag: "latest"
+  defaultUrl: "/lab"
   # default is 300s, sometimes Jetstream volumes are slow to attach
   startTimeout: 600
