@@ -9,6 +9,8 @@
 
 ## Jupyter Notebook Single user image
 
+[Issue with the discussion about the software environment](https://github.com/det-lab/jupyterhub-deploy-kubernetes-jetstream/issues/3)
+
 First rebuilt the Jupyter Docker stacks out of Centos 7 instead of Ubuntu (see note about OS support below),
 see:
 
@@ -30,6 +32,8 @@ As examples, checkout the `Dockerfile` files in <https://github.com/zonca/jupyte
 
 ## Software stack via CVMFS
 
+[Issue with the discussion about integrating CVMFS](https://github.com/det-lab/jupyterhub-deploy-kubernetes-jetstream/issues/4)
+
 The software stack is based on <http://lcgdocs.web.cern.ch/lcgdocs/lcgreleases/introduction/>
 
 Documentation specific to CDMS is at <https://confluence.slac.stanford.edu/display/CDMS/Using+CDMS+software+releases>
@@ -50,3 +54,25 @@ by @bloer
 The CVMFS CDMS repo supports officially CentOS 7 and SLC6. I am reasonably certain that any RedHat-derived flavor should work though (in particular I know RHEL6 works).
 
 There is no support from CERN for newer OS's yet. There is ubuntu support; I am not building a version of the CDMS image off of that currently but probably could if there was a good reason to do so.
+
+## Resource usage
+
+```
+--------------- SU usage for the minimum scenario
+1 m1.medium master - 0 m1.xlarge workers
+6 SU/hour
+144 SU/day
+4,320 SU/month
+--------------- SU usage for the average scenario
+1 m1.medium master - 3 m1.xlarge workers
+78 SU/hour
+1,872 SU/day
+56,160 SU/month
+--------------- SU usage for the maximum scenario
+1 m1.medium master - 6 m1.xlarge workers
+150 SU/hour
+3,600 SU/day
+108,000 SU/month
+```
+
+[Issue with more details](https://github.com/det-lab/jupyterhub-deploy-kubernetes-jetstream/issues/2#issuecomment-567164886)
