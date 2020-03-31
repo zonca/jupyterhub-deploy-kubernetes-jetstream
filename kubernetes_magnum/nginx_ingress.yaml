@@ -16,7 +16,7 @@ controller:
     https: 443
 
   config:
-    proxy-body-size: "20m"
+    proxy-body-size: "100m"
 
   # Will add custom header to Nginx https://github.com/kubernetes/ingress-nginx/tree/master/docs/examples/customization/custom-headers
   headers: {}
