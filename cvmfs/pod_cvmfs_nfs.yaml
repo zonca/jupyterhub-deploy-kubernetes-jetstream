@@ -13,6 +13,9 @@ spec:
       - name: cvmfs-folder
         persistentVolumeClaim:
           claimName: cvmfs-folder-claim
+      - name: data-volume
+        persistentVolumeClaim:
+          claimName: data-pv-claim
   restartPolicy: Never
   containers:
       - image: zonca/cvmfs-client-nfs
@@ -25,11 +28,13 @@ spec:
             # and cannot be on Docker's overlayFS, so using a small volume.
             - name: cvmfs-folder
               mountPath: /cvmfs
+            - name: data-volume
+              mountPath: /cvmfs/data
         securityContext:
             privileged: true
         env:
             - name: CVMFS_REPOSITORIES
-              value: "config-osg.opensciencegrid.org cdms.opensciencegrid.org sft.cern.ch geant4.cern.ch"
+              value: "config-osg.opensciencegrid.org cdms.opensciencegrid.org sft.cern.ch geant4.cern.ch data"
             - name: READ_ONLY
               value: ""
             - name: SYNC
@@ -49,6 +54,19 @@ spec:
   resources:
     requests:
       storage: 20Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-pv-claim
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard
+  resources:
+    requests:
+      storage: 50Gi
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
