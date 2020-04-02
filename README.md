@@ -85,3 +85,18 @@ How to run the CDMS container:
 ```
 sudo docker run -it --user 1000:1000 supercdms/cdms-jupyterlab:1.8b /opt/rh/rh-python36/root/bin/ipython3
 ```
+
+Read raw data:
+
+```
+series="09190321_1522"
+filepath = series + "/"
+os.mkdir(series)
+
+from requests.auth import HTTPBasicAuth
+a = requests.get(url, auth=HTTPBasicAuth("user", "password"))
+with open(filepath + "09190321_1522_F0001.mid.gz","wb") as out:
+    out.write(a.content)
+ev=getRawEvents(filepath,series)
+ev.head(2)
+```
