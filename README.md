@@ -30,6 +30,23 @@ This is setup with autobuild, currently doesn't have any customization, but
 we can make pull requests to this repository to add additional packages.
 As examples, checkout the `Dockerfile` files in <https://github.com/zonca/jupyter-docker-stacks-centos7>
 
+## Data volume
+
+The same pod that runs CVMFS also mounts a large volume (currently 500GB), this is made available to
+all Jupyter Notebook containers via NFS at `/cvmfs/data/`. The filesystem location is just for convenience,
+this has nothing to do with CVMFS.
+The filesystem is read-only.
+
+### Copy data to the data volume
+
+The CVMFS pod also has a public facing SSH server running on port 30022 on the master node,
+it only supports SSH key authentication.
+You need to get the private key from the **CDMS secret repository** then:
+
+    ssh -i cdms_nfs_ssh_key -p 30022 root@js-xxx-xxx.jetstream-cloud.org
+
+making sure you get the current address of the master node, also from the secrets repository.
+
 ## Software stack via CVMFS
 
 * [Issue with the discussion about integrating CVMFS](https://github.com/det-lab/jupyterhub-deploy-kubernetes-jetstream/issues/4)
