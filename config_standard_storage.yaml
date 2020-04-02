@@ -27,7 +27,7 @@ singleuser:
     limit: 10
   storage:
     type: dynamic
-    capacity: 5Gi
+    capacity: 10Gi
     dynamic:
       storageClass: standard
     extraVolumes:
