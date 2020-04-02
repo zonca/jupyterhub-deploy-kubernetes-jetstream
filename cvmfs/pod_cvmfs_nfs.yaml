@@ -61,19 +61,6 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: data-pv-claim
-  namespace: default
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: standard
-  resources:
-    requests:
-      storage: 500Gi
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
   name: cvmfs-folder-claim
   namespace: default
 spec:
