@@ -113,6 +113,7 @@ spec:
     role: nfs
   type: NodePort
   ports:
-    - port: 20022
+    - nodePort: 30022
+      port: 20022
       targetPort: 22
       protocol: TCP
