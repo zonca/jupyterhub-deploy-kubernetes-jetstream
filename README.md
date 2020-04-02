@@ -77,3 +77,11 @@ There is no support from CERN for newer OS's yet. There is ubuntu support; I am 
 ```
 
 [Issue with more details](https://github.com/det-lab/jupyterhub-deploy-kubernetes-jetstream/issues/2#issuecomment-567164886)
+
+## Other documentation
+
+How to run the CDMS container:
+
+```
+sudo docker run -it --user 1000:1000 supercdms/cdms-jupyterlab:1.8b /opt/rh/rh-python36/root/bin/ipython3
+```
