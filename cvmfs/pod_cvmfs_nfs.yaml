@@ -113,3 +113,16 @@ spec:
     - name: tcp-892
       port: 892
       protocol: TCP
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: nfs-ssh-service
+spec:
+  selector:
+    role: nfs
+  type: NodePort
+  ports:
+    - port: 20022
+      targetPort: 22
+      protocol: TCP
