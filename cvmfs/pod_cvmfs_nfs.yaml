@@ -6,6 +6,9 @@ metadata:
   labels:
     role: nfs
 spec:
+  nodeSelector:
+    node-role.kubernetes.io/master: ""
+
   volumes:
       - name: cvmfs-cache-volume
         persistentVolumeClaim:
