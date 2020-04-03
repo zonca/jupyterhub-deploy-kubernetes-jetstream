@@ -6,6 +6,9 @@ metadata:
   labels:
     role: nfs
 spec:
+  nodeSelector:
+    node-role.kubernetes.io/master: ""
+
   volumes:
       - name: cvmfs-cache-volume
         persistentVolumeClaim:
@@ -13,6 +16,9 @@ spec:
       - name: cvmfs-folder
         persistentVolumeClaim:
           claimName: cvmfs-folder-claim
+      - name: data-volume
+        persistentVolumeClaim:
+          claimName: data-pv-claim
   restartPolicy: Never
   containers:
       - image: zonca/cvmfs-client-nfs
@@ -25,11 +31,13 @@ spec:
             # and cannot be on Docker's overlayFS, so using a small volume.
             - name: cvmfs-folder
               mountPath: /cvmfs
+            - name: data-volume
+              mountPath: /cvmfs/data
         securityContext:
             privileged: true
         env:
             - name: CVMFS_REPOSITORIES
-              value: "config-osg.opensciencegrid.org cdms.opensciencegrid.org sft.cern.ch geant4.cern.ch"
+              value: "config-osg.opensciencegrid.org cdms.opensciencegrid.org sft.cern.ch geant4.cern.ch data"
             - name: READ_ONLY
               value: ""
             - name: SYNC
@@ -94,4 +102,18 @@ spec:
       protocol: UDP
     - name: tcp-892
       port: 892
+      protocol: TCP
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: nfs-ssh-service
+spec:
+  selector:
+    role: nfs
+  type: NodePort
+  ports:
+    - nodePort: 30022
+      port: 20022
+      targetPort: 22
       protocol: TCP
