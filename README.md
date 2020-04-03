@@ -1,5 +1,7 @@
 # Deploy JupyterHub for CDMS on Jetstream
 
+For the current URL to access the deployment check the [CDMS secrets repository](https://github.com/pibion/jupyterhub-deploy-kubernetes-jetstream-secrets) (ask @pibion for access).
+
 ## JupyterHub
 
 * Basic deployment with Magnum, see the [tutorial](https://zonca.github.io/2019/06/kubernetes-jupyterhub-jetstream-magnum.html), configuration files in the `kubernetes_magnum/` folder, using <https://github.com/det-lab/jupyterhub-deploy-kubernetes-jetstream/>
@@ -41,7 +43,7 @@ The filesystem is read-only.
 
 The CVMFS pod also has a public facing SSH server running on port 30022 on the master node,
 it only supports SSH key authentication.
-You need to get the private key from the **CDMS secret repository** then:
+You need to get the private key from the [CDMS secrets repository](https://github.com/pibion/jupyterhub-deploy-kubernetes-jetstream-secrets) (ask @pibion for access) then:
 
     ssh -i cdms_nfs_ssh_key -p 30022 root@js-xxx-xxx.jetstream-cloud.org
 
