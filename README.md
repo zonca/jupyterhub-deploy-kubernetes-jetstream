@@ -2,6 +2,9 @@
 
 For the current URL to access the deployment check the [CDMS secrets repository](https://github.com/pibion/jupyterhub-deploy-kubernetes-jetstream-secrets) (ask @pibion for access).
 
+* Check project progress at <https://github.com/det-lab/jupyterhub-deploy-kubernetes-jetstream/projects/1>
+* Report problems at <https://github.com/det-lab/jupyterhub-deploy-kubernetes-jetstream/issues>
+
 ## JupyterHub
 
 * Basic deployment with Magnum, see the [tutorial](https://zonca.github.io/2019/06/kubernetes-jupyterhub-jetstream-magnum.html), configuration files in the `kubernetes_magnum/` folder, using <https://github.com/det-lab/jupyterhub-deploy-kubernetes-jetstream/>
