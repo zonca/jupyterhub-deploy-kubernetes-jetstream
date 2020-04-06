@@ -32,25 +32,9 @@ This is setup with autobuild, currently doesn't have any customization, but
 we can make pull requests to this repository to add additional packages.
 As examples, checkout the `Dockerfile` files in <https://github.com/zonca/jupyter-docker-stacks-centos7>
 
-## Data volume
-
-The same pod that runs CVMFS also mounts a large volume (currently 500GB), this is made available to
-all Jupyter Notebook containers via NFS at `/cvmfs/data/`. The filesystem location is just for convenience,
-this has nothing to do with CVMFS.
-The filesystem is read-only.
-
-### Copy data to the data volume
-
-The CVMFS pod also has a public facing SSH server running on port 30022 on the master node,
-it only supports SSH key authentication.
-You need to get the private key from the [CDMS secrets repository](https://github.com/pibion/jupyterhub-deploy-kubernetes-jetstream-secrets) (ask @pibion for access) then:
-
-    ssh -i cdms_nfs_ssh_key -p 30022 root@js-xxx-xxx.jetstream-cloud.org
-
-making sure you get the current address of the master node, also from the secrets repository.
-
 ## Software stack via CVMFS
 
+* The pod that runs CVMFS, the NFS server and the SSH server is based on the docker container at <https://github.com/zonca/docker-cvmfs-client>, which is automatically built on [Dockerhub as `zonca/cvmfs-client-nfs`](https://hub.docker.com/repository/docker/zonca/cvmfs-client-nfs)
 * [Issue with the discussion about integrating CVMFS](https://github.com/det-lab/jupyterhub-deploy-kubernetes-jetstream/issues/4)
 * [Tutorial for the deployment of CVMFS on top of Kubernetes](https://zonca.dev/2020/02/cvmfs-kubernetes.html)
 
@@ -67,13 +51,30 @@ cd /cvmfs/cdms.opensciencegrid.org
 BatRoot
 ```
 
-### Note about OS support
+**Note about OS support**
 
 by @bloer
 
 The CVMFS CDMS repo supports officially CentOS 7 and SLC6. I am reasonably certain that any RedHat-derived flavor should work though (in particular I know RHEL6 works).
 
 There is no support from CERN for newer OS's yet. There is ubuntu support; I am not building a version of the CDMS image off of that currently but probably could if there was a good reason to do so.
+
+## Data volume
+
+The same pod that runs CVMFS also mounts a large volume (currently 500GB), this is made available to
+all Jupyter Notebook containers via NFS at `/cvmfs/data/`. The filesystem location is just for convenience,
+this has nothing to do with CVMFS.
+The filesystem is read-only.
+
+### Copy data to the data volume
+
+The CVMFS pod also has a public facing SSH server running on port 30022 on the master node,
+it only supports SSH key authentication.
+You need to get the private key from the [CDMS secrets repository](https://github.com/pibion/jupyterhub-deploy-kubernetes-jetstream-secrets) (ask @pibion for access) then:
+
+    ssh -i cdms_nfs_ssh_key -p 30022 root@js-xxx-xxx.jetstream-cloud.org
+
+making sure you get the current address of the master node, also from the secrets repository.
 
 ## Resource usage
 
