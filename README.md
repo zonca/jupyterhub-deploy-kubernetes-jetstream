@@ -1,6 +1,6 @@
 # Deploy JupyterHub on top of Kubernetes on Jetstream
 
-Configuration files for the tutorials available on my blog <https://zonca.github.io/tag/jetstream.html>
+Configuration files for the tutorials available on my blog <https://zonca.dev/categories/#jetstream>
 
 The recommended deployment strategy is via Magnum, see the [tutorial](https://zonca.github.io/2019/06/kubernetes-jupyterhub-jetstream-magnum.html), which also supports autoscaling, see the [autoscaling tutorial](https://zonca.github.io/2019/09/kubernetes-jetstream-autoscaler.html).
 
