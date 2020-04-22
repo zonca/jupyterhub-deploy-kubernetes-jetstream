@@ -54,6 +54,19 @@ cd /cvmfs/cdms.opensciencegrid.org
 BatRoot
 ```
 
+### Install Jupyter Kernels
+
+All the CDMS Jupyter Kernels can be installed in the user environment by opening a terminal and then running:
+
+    > install_cdms_kernels
+    
+the reload JupyterLab by reloading the webpage. After this the user should see all the available CDMS kernels.
+This only needs to be run once. And then run again when new releases of the software stack are made available.
+Sometimes releases are removed from CVMFS, so it possible that installed kernels stop working, in this case
+the user can remove them by deleting the right folder from:
+
+    ~/.local/share/jupyter/kernels/
+
 **Note about OS support**
 
 by @bloer
