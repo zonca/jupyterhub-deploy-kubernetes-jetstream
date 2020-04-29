@@ -1,7 +1,8 @@
 # Deploy JupyterHub for CDMS on Jetstream
 
-For the current URL to access the deployment check the [CDMS secrets repository](https://github.com/pibion/jupyterhub-deploy-kubernetes-jetstream-secrets) (ask @pibion for access).
+The deployment is available at <https://supercdms.jetstream-cloud.org>, all members of the SuperCDMS Gitlab organizations have permission to login.
 
+* Access [CDMS secrets repository](https://github.com/pibion/jupyterhub-deploy-kubernetes-jetstream-secrets) (ask @pibion for access) for SSH access to the data pod
 * Check project progress at <https://github.com/det-lab/jupyterhub-deploy-kubernetes-jetstream/projects/1>
 * Report problems at <https://github.com/det-lab/jupyterhub-deploy-kubernetes-jetstream/issues>
 
