@@ -51,6 +51,8 @@ singleuser:
   image:
     name: "zonca/docker-jupyter-cdms-light"
     tag: "latest"
+    pullPolicy: "Always"
+
   defaultUrl: "/lab"
   # default is 300s, sometimes Jetstream volumes are slow to attach
   startTimeout: 600
