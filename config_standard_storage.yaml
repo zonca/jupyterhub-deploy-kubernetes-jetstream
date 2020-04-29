@@ -29,11 +29,11 @@ singleuser:
       effect: "NoSchedule"
   # very small limits for testing on small instances
   memory:
-    guarantee: 10G
-    limit: 10G
+    guarantee: 3G
+    limit: 3G
   cpu:
-    guarantee: 4
-    limit: 10
+    guarantee: 1
+    limit: 1
   storage:
     type: dynamic
     capacity: 10Gi
