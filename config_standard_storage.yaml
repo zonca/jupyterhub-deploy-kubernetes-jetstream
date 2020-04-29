@@ -18,6 +18,15 @@ proxy:
         node-role.kubernetes.io/master: ""
 
 singleuser:
+  extraTolerations:
+    - key: "CriticalAddonsOnly"
+      operator: "Equal"
+      value: "True"
+      effect: "NoSchedule"
+    - key: "dedicated"
+      operator: "Equal"
+      value: "master"
+      effect: "NoSchedule"
   # very small limits for testing on small instances
   memory:
     guarantee: 10G
