@@ -35,7 +35,7 @@ singleuser:
     guarantee: 1
     limit: 1
   storage:
-    type: dynamic
+    type: none
     capacity: 10Gi
     dynamic:
       storageClass: standard
