@@ -47,7 +47,7 @@ singleuser:
     extraVolumeMounts:
         - name: cvmfs-nfs-volume
           mountPath: /cvmfs
-          readOnly: true
+          readOnly: false
   image:
     name: "zonca/docker-jupyter-cdms-light"
     tag: "latest"

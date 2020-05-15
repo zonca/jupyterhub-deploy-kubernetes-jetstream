@@ -81,7 +81,13 @@ There is no support from CERN for newer OS's yet. There is ubuntu support; I am 
 The same pod that runs CVMFS also mounts a large volume (currently 500GB), this is made available to
 all Jupyter Notebook containers via NFS at `/cvmfs/data/`. The filesystem location is just for convenience,
 this has nothing to do with CVMFS.
-The filesystem is read-only.
+The filesystem is readable and writable by all the Jupyter Notebook users, the Jupyter Notebook users run
+as the user `jovyan` so everyone can delete everyone else data.
+However if we copy data there via SSH (see below) the folders are owned by root, therefore all users can
+read the data but not delete them, so by default large amounts of data copied via SSH are protected.
+To make folders created via SSH writable by users, modify permissions:
+
+    chmod -R a+wx writable_folder
 
 ### Copy data to the data volume
 

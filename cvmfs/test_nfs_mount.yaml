@@ -21,7 +21,7 @@ spec:
       volumeMounts:
         - name: nfs-volume
           mountPath: /cvmfs
-          readOnly: true
+          readOnly: false
 
       command: [ "/bin/sh", "-c", "--" ]
       args: [ "while true; do sleep 30; done;" ]

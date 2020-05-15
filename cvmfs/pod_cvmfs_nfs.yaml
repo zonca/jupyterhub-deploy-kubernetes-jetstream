@@ -37,7 +37,7 @@ spec:
             privileged: true
         env:
             - name: CVMFS_REPOSITORIES
-              value: "config-osg.opensciencegrid.org cdms.opensciencegrid.org sft.cern.ch geant4.cern.ch data"
+              value: "config-osg.opensciencegrid.org cdms.opensciencegrid.org sft.cern.ch geant4.cern.ch"
             - name: READ_ONLY
               value: ""
             - name: SYNC
