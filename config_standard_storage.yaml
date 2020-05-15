@@ -1,4 +1,13 @@
 hub:
+  extraTolerations:
+    - key: "CriticalAddonsOnly"
+      operator: "Equal"
+      value: "True"
+      effect: "NoSchedule"
+    - key: "dedicated"
+      operator: "Equal"
+      value: "master"
+      effect: "NoSchedule"
   db:
     type: sqlite-pvc
     pvc:
@@ -13,6 +22,15 @@ hub:
     c.Spawner.http_timeout = 90
 
 proxy:
+  extraTolerations:
+    - key: "CriticalAddonsOnly"
+      operator: "Equal"
+      value: "True"
+      effect: "NoSchedule"
+    - key: "dedicated"
+      operator: "Equal"
+      value: "master"
+      effect: "NoSchedule"
   # run only on master nodes
   nodeSelector:
         node-role.kubernetes.io/master: ""
