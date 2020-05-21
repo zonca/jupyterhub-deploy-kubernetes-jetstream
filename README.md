@@ -6,6 +6,10 @@ The deployment is available at <https://supercdms.jetstream-cloud.org>, all memb
 * Check project progress at <https://github.com/det-lab/jupyterhub-deploy-kubernetes-jetstream/projects/1>
 * Report problems at <https://github.com/det-lab/jupyterhub-deploy-kubernetes-jetstream/issues>
 
+## Instructions on how to redeploy the existing deployment
+
+See [REDEPLOY.md](REDEPLOY.md)
+
 ## JupyterHub
 
 * Basic deployment with Magnum, see the [tutorial](https://zonca.github.io/2020/05/kubernetes-jupyterhub-jetstream-magnum.html), configuration files in the `kubernetes_magnum/` folder, using <https://github.com/det-lab/jupyterhub-deploy-kubernetes-jetstream/>
