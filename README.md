@@ -8,7 +8,7 @@ The deployment is available at <https://supercdms.jetstream-cloud.org>, all memb
 
 ## JupyterHub
 
-* Basic deployment with Magnum, see the [tutorial](https://zonca.github.io/2019/06/kubernetes-jupyterhub-jetstream-magnum.html), configuration files in the `kubernetes_magnum/` folder, using <https://github.com/det-lab/jupyterhub-deploy-kubernetes-jetstream/>
+* Basic deployment with Magnum, see the [tutorial](https://zonca.github.io/2020/05/kubernetes-jupyterhub-jetstream-magnum.html), configuration files in the `kubernetes_magnum/` folder, using <https://github.com/det-lab/jupyterhub-deploy-kubernetes-jetstream/>
 * setup HTTPS <https://zonca.dev/2020/03/setup-https-kubernetes-letsencrypt.html>
 * deploy CVMFS <https://zonca.dev/2020/02/cvmfs-kubernetes.html>
 * Will also deploy autoscaling, see the [autoscaling tutorial](https://zonca.github.io/2019/09/kubernetes-jetstream-autoscaler.html).
