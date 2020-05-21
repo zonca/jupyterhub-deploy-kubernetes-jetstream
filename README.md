@@ -24,4 +24,4 @@ the user can remove them by deleting the right folder from:
 ## Information about the deployment
 
 * Check project progress at <https://github.com/det-lab/jupyterhub-deploy-kubernetes-jetstream/projects/1>
-See [DEPLOY.md](DEPLOY.md)
+* See [DEPLOY.md](DEPLOY.md)
