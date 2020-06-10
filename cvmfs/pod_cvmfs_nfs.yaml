@@ -20,6 +20,10 @@ spec:
         persistentVolumeClaim:
           claimName: data-pv-claim
   restartPolicy: Never
+  tolerations:
+      - key: "node-role.kubernetes.io/master"
+        operator: "Exists"
+        effect: "NoSchedule"
   containers:
       - image: zonca/cvmfs-client-nfs
         imagePullPolicy: Always
@@ -79,7 +83,10 @@ spec:
   selector:
     role: nfs
   # NFS volume does not support DNS, so choosing a IP
-  clusterIP: 10.254.77.77
+  # for Magnum
+  # clusterIP: 10.254.77.77
+  # for Kubespray
+  clusterIP: 10.233.46.63
   ports:
     # Open the ports required by the NFS server
     - name: tcp-2049
