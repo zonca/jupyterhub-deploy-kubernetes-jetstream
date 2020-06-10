@@ -42,6 +42,8 @@ The certificates in the cluster have the old IP, therefore we need to fix the ku
 remove the `certificate-authority` line and add:
 
     insecure-skip-tls-verify: true
+    
+just below `server:` at the same indentation level
 
 ## Remount the data volume into CVMFS
 
