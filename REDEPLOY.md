@@ -63,3 +63,4 @@ Open port 30022:
 
     openstack security group rule create $SECURITY_GROUP_NAME --protocol tcp --dst-port 30022:30022 --remote-ip 0.0.0.0/0
 
+Test SSH connection with `ssh_data.sh`
