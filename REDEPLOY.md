@@ -31,8 +31,9 @@ Follow instruction in the [README.md](https://github.com/det-lab/jupyterhub-depl
 
 Once the instances are created, assign the right IP to the master instance:
 
-    openstack server remove floating ip k8s-5ohejqqnatgc-master-0 $IP
-    openstack server add floating ip k8s-5ohejqqnatgc-master-0 149.165.156.119
+    MASTER=k8s-5ohejqqnatgc-master-0
+    openstack server remove floating ip $MASTER $IP
+    openstack server add floating ip $MASTER 149.165.156.119
 
 The certificates in the cluster have the old IP, therefore we need to fix the kubectl configuration:
 
