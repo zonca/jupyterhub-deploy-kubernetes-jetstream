@@ -8,14 +8,16 @@ spec:
     - name: nfs-volume
       nfs: 
         # This is always the same, defined in the nfs-service Service
-        server: 10.254.77.77
+        # server: 10.254.77.77
+        server: 10.233.46.63
         path: /
 
   # In this container, we'll mount the NFS volume
   # and write the date to a file inside it.
   containers:
     - name: app
-      image: centos:centos7
+      #image: centos:centos7
+      image: ubuntu:18.04
 
       # Mount the NFS volume in the container
       volumeMounts:

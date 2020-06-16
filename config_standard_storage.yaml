@@ -33,7 +33,10 @@ singleuser:
     extraVolumes:
         - name: cvmfs-nfs-volume
           nfs:
-            server: 10.254.77.77
+            # for Magnum
+            # server: 10.254.77.77
+            # for Kubespray
+            server: 10.233.46.63
             path: /
     extraVolumeMounts:
         - name: cvmfs-nfs-volume
