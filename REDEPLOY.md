@@ -59,12 +59,6 @@ The certificates in the cluster have the old IP, therefore we need to fix the ku
 
 `kubectl_secret/config`
 
-remove the `certificate-authority` line and add:
-
-    insecure-skip-tls-verify: true
-    
-just below `server:` at the same indentation level
-
 ## Remount the data volume into CVMFS
 
 I have saved the current Kubernetes PersistentVolume and PersistentVolumeClaim,
