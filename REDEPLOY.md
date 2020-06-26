@@ -48,6 +48,12 @@ Once the instances are created, assign the right IP to the master instance:
     MASTER=k8s-5ohejqqnatgc-master-0
     openstack server remove floating ip $MASTER $IP
     openstack server add floating ip $MASTER 149.165.156.119
+    
+set:
+
+    supplementary_addresses_in_ssl_keys: [149.165.156.119] 
+    
+in `k8s-cluster.yml` before running ansible.
 
 The certificates in the cluster have the old IP, therefore we need to fix the kubectl configuration:
 
