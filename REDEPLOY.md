@@ -1,9 +1,23 @@
 # Documentation on how to redeploy JupyterHub without loosing data
 
+## Save single user storage
+
+Save the persistent volume claims:
+
+    kubectl -n jhub get pvc -l "component=singleuser-storage" -o yaml > pvc.yaml
+
+The persistent volumes do not have labels, so first print out the pvc:
+
+    kubectl -n jhub get pvc -l "component=singleuser-storage"
+
+Then copy paste the desired IDs from the VOLUME column:
+
+    kubectl -n jhub get pv ID1 ID2 ID3 -o yaml > pv.yaml
+    
 ## Tear down JupyterHub and NGINX
 
 * `helm delete --purge jhub nginx`
-* `k delete namespace jhub`
+* **DO NOT DELETE THE NAMESPACE TO PRESERVE THE USER DISKS** `k delete namespace jhub`
 
 ## Save the data volume
 
