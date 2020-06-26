@@ -57,8 +57,6 @@ Then launch the CVMFS pod:
 
     kubectl create -f pod_cvmfs_nfs.yaml
 
-Login to the CVMFS pod, add the public key <https://github.com/pibion/jupyterhub-deploy-kubernetes-jetstream-secrets/blob/master/ssh/cdms_nfs_ssh_key.pub> to `.ssh/authorized_keys`.
-
 Open port 30022:
 
     openstack security group rule create $SECURITY_GROUP_NAME --protocol tcp --dst-port 30022:30022 --remote-ip 0.0.0.0/0
