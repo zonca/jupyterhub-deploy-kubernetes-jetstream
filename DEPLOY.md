@@ -14,7 +14,7 @@ Instructions on how to redeploy the existing deployment, [REDEPLOY.md](REDEPLOY.
 We have 2 allocations on Jetstream:
 
 * `TG-PHY190047` is the production allocation, where `supercmds.jetstream-cloud.org` runs, should **NEVER** be used for experiments
-* `TG-PHY200028` is the educatational allocation, this can be used to play with the Openstack API, anything is breakable, do not store sensitive data. This can host from time to time a development version of the JupyterHub platform with the objective of testing new features before deployment. Please remember to switch off resources that you deploy here so that we do not burn through the allocation too quickly.
+* `TG-PHY200028` is the educational allocation, this can be used to play with the Openstack API, anything is breakable, do not store sensitive data. This can host from time to time a development version of the JupyterHub platform with the objective of testing new features before deployment. Please remember to switch off resources that you deploy here so that we do not burn through the allocation too quickly.
 
 ## Jupyter Notebook Single user image
 
