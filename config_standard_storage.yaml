@@ -21,13 +21,27 @@ proxy:
         node-role.kubernetes.io/master: ""
 
 singleuser:
-  # very small limits for testing on small instances
   memory:
-    guarantee: 3G
-    limit: 3G
+      guarantee: 5G
+      limit: 5G
   cpu:
-    guarantee: 1
-    limit: 1
+      guarantee: 5
+      limit: 5
+  profileList:
+    - display_name: "Default: 4 CPUs and 5 GB RAM"
+      default: True
+    - display_name: "Tiny: 1 CPUs and 3 GB RAM"
+      kubespawner_override:
+        cpu_limit: 1
+        cpu_guarantee: 1
+        mem_limit: 3G
+        mem_guarantee: 3G
+    - display_name: "Full node: 20 CPUs and 50 GB RAM"
+      kubespawner_override:
+        cpu_limit: 24
+        cpu_guarantee: 20
+        mem_limit: 50G
+        mem_guarantee: 50G
   storage:
     type: dynamic
     capacity: 10Gi
