@@ -11,6 +11,9 @@ hub:
         node-role.kubernetes.io/master: ""
   extraConfig: |
     c.Spawner.http_timeout = 90
+    c.Spawner.args = [
+          "--ResourceUseDisplay.track_cpu_percent=True",
+    ]
 
 proxy:
   # run only on master nodes
