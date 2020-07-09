@@ -1,3 +1,4 @@
 magnum
 kubectl_secret
 .s3cfg
+autoscaler/new
