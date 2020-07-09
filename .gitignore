@@ -1,0 +1,5 @@
+*openrc*
+*secrets.yaml
+.ipynb_checkpoints
+*.swp
+obsolete
