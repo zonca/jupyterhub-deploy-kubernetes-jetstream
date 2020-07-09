@@ -1,4 +1,8 @@
 *openrc*
+kubespray
+cluster_api
+k8s_tunnel.sh
+*secrets/
 *secrets.yaml
 .ipynb_checkpoints
 *.swp
