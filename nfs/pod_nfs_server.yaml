@@ -29,21 +29,3 @@ spec:
               value: ""
         securityContext:
             privileged: true
----
-kind: Service
-apiVersion: v1
-metadata:
-  name: nfs-service
-spec:
-  selector:
-    role: nfs
-  # NFS volume does not support DNS, so choosing a IP
-  # for Magnum
-  clusterIP: 10.254.204.67
-  # for Kubespray
-  # clusterIP: 10.233.46.63
-  ports:
-    # Open the ports required by the NFS server
-    - name: tcp-2049
-      port: 2049
-      protocol: TCP
