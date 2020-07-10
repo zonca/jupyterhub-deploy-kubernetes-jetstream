@@ -16,6 +16,12 @@ We have 2 allocations on Jetstream:
 * `TG-PHY190047` is the production allocation, where `supercmds.jetstream-cloud.org` runs, should **NEVER** be used for experiments
 * `TG-PHY200028` (Start Date: 2020-06-26 End Date: `2021-08-23` Awarded Resources: IU/TACC (Jetstream): 200,000.0 SUs) It is the educational allocation, this can be used to play with the Openstack API, anything is breakable, do not store sensitive data. This can host from time to time a development version of the JupyterHub platform with the objective of testing new features before deployment. Please remember to switch off resources that you deploy here so that we do not burn through the allocation too quickly.
 
+## Customize Jupyter Notebook resources per user
+
+Edit this file and make a Pull Request to choose what profiles each user can choose from about how much RAM and CPU their session gets:
+
+https://github.com/det-lab/jupyterhub-deploy-kubernetes-jetstream/blob/42af7fa9ad805d0c643885c81768f3f8924ebdce/config_standard_storage.yaml#L30-L44
+
 ## Jupyter Notebook Single user image
 
 [Issue with the discussion about the software environment](https://github.com/det-lab/jupyterhub-deploy-kubernetes-jetstream/issues/3)
