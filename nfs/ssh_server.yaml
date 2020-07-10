@@ -1,40 +1,50 @@
-kind: Pod
-apiVersion: v1
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: ssh-server
+  namespace: default
   labels:
     role: ssh
 spec:
-  # Add the server as an NFS volume for the pod
-  volumes:
-    - name: nfs-volume
-     #persistentVolumeClaim:
-     #  claimName: nfs-shared-volume-claim
-      nfs:
-        # for Magnum
-        server: 10.254.204.67
-        # for Kubespray
-        # server: 10.233.46.63
-        path: /
+    replicas: 1
+    selector:
+        matchLabels:
+            role: ssh
+    template:
+      metadata:
+          labels:
+              role: ssh
+      spec:
+          # Add the server as an NFS volume for the pod
+          volumes:
+            - name: nfs-volume
+             #persistentVolumeClaim:
+             #  claimName: nfs-shared-volume-claim
+              nfs:
+                # for Magnum
+                server: 10.254.204.67
+                # for Kubespray
+                # server: 10.233.46.63
+                path: /
 
-  # In this container, we'll mount the NFS volume
-  # and write the date to a file inside it.
-  containers:
-    - name: app
-      image: linuxserver/openssh-server
+          # In this container, we'll mount the NFS volume
+          # and write the date to a file inside it.
+          containers:
+            - name: app
+              image: linuxserver/openssh-server
 
-      # Mount the NFS volume in the container
-      volumeMounts:
-        - name: nfs-volume
-          mountPath: /share
-          readOnly: false
-      env:
-        - name: PUBLIC_KEY
-          value: "ssh-rsa xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx code@andreazonca.com"
-        - name: USER_NAME
-          value: "datacopier"
-        - name: SUDO_ACCESS
-          value: "true"
+              # Mount the NFS volume in the container
+              volumeMounts:
+                - name: nfs-volume
+                  mountPath: /share
+                  readOnly: false
+              env:
+                - name: PUBLIC_KEY
+                  value: "ssh-rsa xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx code@andreazonca.com"
+                - name: USER_NAME
+                  value: "datacopier"
+                - name: SUDO_ACCESS
+                  value: "true"
 ---
 kind: Service
 apiVersion: v1

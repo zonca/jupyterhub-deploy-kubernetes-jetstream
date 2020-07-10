@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nfs-server
+  namespace: default
+  labels:
+    role: nfs
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            role: nfs
+    template:
+      metadata:
+          labels:
+              role: nfs
+      spec:
+          volumes:
+              - name: nfs-share-folder
+                persistentVolumeClaim:
+                  claimName: nfs-share-folder-claim
+          restartPolicy: Always
+          containers:
+              - image: itsthenetwork/nfs-server-alpine
+                imagePullPolicy: IfNotPresent
+                name: nfs-server
+                volumeMounts:
+                    - name: nfs-share-folder
+                      mountPath: /share
+                securityContext:
+                    privileged: true
+                env:
+                    - name: SHARED_DIRECTORY
+                      value: "/share"
+                   #- name: READ_ONLY
+                   #  value: ""
+                    - name: SYNC
+                      value: ""
+                securityContext:
+                    privileged: true
