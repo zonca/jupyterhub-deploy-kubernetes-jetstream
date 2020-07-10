@@ -1,0 +1,80 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nfs-server
+  namespace: default
+  labels:
+    role: nfs
+spec:
+  volumes:
+      - name: nfs-share-folder
+        persistentVolumeClaim:
+          claimName: nfs-share-folder-claim
+  restartPolicy: Never
+  containers:
+      - image: itsthenetwork/nfs-server-alpine
+        imagePullPolicy: IfNotPresent
+        name: nfs-server
+        volumeMounts:
+            - name: nfs-share-folder
+              mountPath: /share
+        securityContext:
+            privileged: true
+        env:
+            - name: SHARED_DIRECTORY
+              value: "/share"
+           #- name: READ_ONLY
+           #  value: ""
+            - name: SYNC
+              value: ""
+        securityContext:
+            privileged: true
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-share-folder-claim
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard
+  resources:
+    requests:
+      storage: 10Gi
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: nfs-service
+spec:
+  selector:
+    role: nfs
+  # NFS volume does not support DNS, so choosing a IP
+  # for Magnum
+  clusterIP: 10.254.204.67
+  # for Kubespray
+  # clusterIP: 10.233.46.63
+  ports:
+    # Open the ports required by the NFS server
+    - name: tcp-2049
+      port: 2049
+      protocol: TCP
+    - name: udp-111
+      port: 111
+      protocol: UDP
+    - name: tcp-111
+      port: 111
+      protocol: TCP
+    - name: tcp-32803
+      port: 32803
+      protocol: TCP
+    - name: udp-32769
+      port: 32769
+      protocol: UDP
+    - name: udp-892
+      port: 892
+      protocol: UDP
+    - name: tcp-892
+      port: 892
+      protocol: TCP

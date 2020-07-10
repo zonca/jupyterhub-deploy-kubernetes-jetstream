@@ -1,0 +1,31 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: test-nfs-mount
+spec:
+  # Add the server as an NFS volume for the pod
+  volumes:
+    - name: nfs-volume
+     #persistentVolumeClaim:
+     #  claimName: nfs-shared-volume-claim
+      nfs:
+        # for Magnum
+        server: 10.254.204.67
+        # for Kubespray
+        # server: 10.233.46.63
+        path: /
+
+  # In this container, we'll mount the NFS volume
+  # and write the date to a file inside it.
+  containers:
+    - name: app
+      image: centos:centos7
+
+      # Mount the NFS volume in the container
+      volumeMounts:
+        - name: nfs-volume
+          mountPath: /share
+          readOnly: false
+
+      command: [ "/bin/sh", "-c", "--" ]
+      args: [ "while true; do sleep 30; done;" ]
