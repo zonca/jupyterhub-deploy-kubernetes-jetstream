@@ -114,6 +114,8 @@ controller:
   ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
   ##
   tolerations:
+    - effect: "NoSchedule"
+      key: "node.kubernetes.io/master"
     - key: "dedicated"
       value: "master"
       effect: "NoSchedule"
