@@ -4,7 +4,8 @@
 controller:
   name: controller
   image:
-    repository: quay.io/kubernetes-ingress-controller/nginx-ingress-controller
+    registry: quay.io
+    repository: kubernetes-ingress-controller/nginx-ingress-controller
     tag: "0.24.1"
     pullPolicy: IfNotPresent
     # www-data -> uid 33
