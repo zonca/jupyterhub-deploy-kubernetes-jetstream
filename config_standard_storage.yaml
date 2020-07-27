@@ -30,6 +30,7 @@ singleuser:
       storageClass: standard
   # default is 300s, sometimes Jetstream volumes are slow to attach
   startTimeout: 600
+  # See https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream/issues/38
   lifecycleHooks:
     postStart:
       exec:
