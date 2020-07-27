@@ -65,3 +65,13 @@ singleuser:
   defaultUrl: "/lab"
   # default is 300s, sometimes Jetstream volumes are slow to attach
   startTimeout: 600
+  lifecycleHooks:
+    postStart:
+      exec:
+        command:
+           - "sh"
+           - "-c"
+           - >
+             chmod 700 .ssh;
+             chmod g-s .ssh;
+             chmod 600 .ssh/*
