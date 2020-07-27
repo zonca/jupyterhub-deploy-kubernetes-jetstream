@@ -6,7 +6,7 @@ spec:
   # Add the server as an NFS volume for the pod
   volumes:
     - name: nfs-volume
-      nfs: 
+      nfs:
         # This is always the same, defined in the nfs-service Service
         # server: 10.254.77.77
         server: 10.233.46.63
