@@ -74,4 +74,5 @@ singleuser:
            - >
              chmod 700 .ssh;
              chmod g-s .ssh;
-             chmod 600 .ssh/*
+             chmod 600 .ssh/*;
+             exit 0
