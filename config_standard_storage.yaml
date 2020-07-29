@@ -9,6 +9,8 @@ hub:
   # run only on master nodes
   nodeSelector:
         node-role.kubernetes.io/master: ""
+  extraConfig: |
+    c.KubeSpawner.fs_gid = None
 
 proxy:
   # run only on master nodes
