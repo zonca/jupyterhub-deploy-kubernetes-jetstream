@@ -1,0 +1,124 @@
+# Pangeo configuration values
+# --------------------
+# The following configuration options are specifically for the custom Pangeo components.
+# Some values will be inherited into the dependent chart configs. See requirements.yaml for info.
+
+# Create and use roles and service accounts on an RBAC enabled cluster.
+rbac:
+  enabled: true
+
+
+# Dependency configuration values
+# -------------------------------
+# To configure dependencies you must create a key with the name of the dependency
+# and then configure as per the dependent chart's values.yaml. Don't forget to indent!
+
+jupyterhub:
+  # Helm config for jupyterhub goes here
+  # See https://github.com/jupyterhub/zero-to-jupyterhub-k8s/blob/master/jupyterhub/values.yaml
+
+  singleuser:
+    image:
+      name: pangeo/base-notebook
+      tag: 2019.09.23
+    defaultUrl: "/lab"
+    serviceAccountName: daskkubernetes
+  prePuller:
+    hook:
+      enabled: false
+  # optimizations: see https://zero-to-jupyterhub.readthedocs.io/en/latest/optimization.html?highlight=scheduling#optimizations
+  scheduling:
+    userScheduler:
+      enabled: true
+      replicas: 2
+    podPriority:
+      enabled: true
+    userPlaceholder:
+      enabled: true
+      replicas: 2
+  hub:
+    services:
+      dask-gateway:
+        # This makes the gateway available at ${HUB_URL}/services/dask-gateway
+        url: http://web-public-dev-staging-dask-gateway
+
+# Resource specifications
+# -----------------------
+# (specific deployments of this chart should add this section to local helm config)
+#
+#    cpu:
+#      limit: 2
+#      guarantee: 1
+#    memory:
+#      limit: 4G
+#      guarantee: 2G
+
+dask-kubernetes:
+  # Enabling this means to install a Kubernetes ServiceAccount, RoleBinding, and
+  # Role which is part of this Helm chart. To fully disable the use of these,
+  # you should not only set this enabled flag to false but also set
+  # jupyterhub.singleuser.serviceAccountName to null.
+  enabled: false
+
+dask-gateway:
+  # Enabling this means to install the dask-gateway Helm chart as a dependency.
+  enabled: true
+
+  # dask-gateway configuration goes here
+  # See https://github.com/dask/dask-gateway/blob/master/resources/helm/dask-gateway/values.yaml
+  # The values here are optimized for deployment within a jupyterhub.
+  gateway:
+    prefix: "/services/dask-gateway"
+    auth:
+      type: jupyterhub
+
+    backend:
+      scheduler:
+        extraPodConfig:
+          tolerations:
+            - key: "k8s.dask.org/dedicated"
+              operator: "Equal"
+              value: "scheduler"
+              effect: "NoSchedule"
+            - key: "k8s.dask.org_dedicated"
+              operator: "Equal"
+              value: "scheduler"
+              effect: "NoSchedule"
+      worker:
+        extraPodConfig:
+          tolerations:
+            - key: "k8s.dask.org/dedicated"
+              operator: "Equal"
+              value: "worker"
+              effect: "NoSchedule"
+            - key: "k8s.dask.org_dedicated"
+              operator: "Equal"
+              value: "worker"
+              effect: "NoSchedule"
+
+    extraConfig:
+      # Use the mapping form, to support merging multiple values.yaml
+      optionHandler: |
+        from dask_gateway_server.options import Options, Integer, Float, String
+        def option_handler(options):
+            if ":" not in options.image:
+                raise ValueError("When specifying an image you must also provide a tag")
+            return {
+                "worker_cores_limit": options.worker_cores,
+                "worker_cores": min(options.worker_cores / 2, 1),
+                "worker_memory": "%fG" % options.worker_memory,
+                "image": options.image,
+            }
+        c.Backend.cluster_options = Options(
+            Integer("worker_cores", 2, min=1, max=4, label="Worker Cores"),
+            Float("worker_memory", 4, min=1, max=8, label="Worker Memory (GiB)"),
+            String("image", default="pangeo/base-notebook:2020.04.10", label="Image"),
+            handler=option_handler,
+        )
+
+  traefik:
+    service:
+      # We route traffic to this service through JupyterHub's configurable
+      # proxy under the /services/dask-gateway path, so we don't want it
+      # to be exposed directly as a LoadBalancer.
+      type: ClusterIP
