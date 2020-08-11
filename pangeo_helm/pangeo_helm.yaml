@@ -18,6 +18,17 @@ jupyterhub:
   # See https://github.com/jupyterhub/zero-to-jupyterhub-k8s/blob/master/jupyterhub/values.yaml
 
   singleuser:
+    memory:
+     guarantee: 500M
+     limit: 1G
+    cpu:
+     guarantee: "1"
+     limit: "1"
+    storage:
+     type: dynamic
+     capacity: 1Gi
+     dynamic:
+       storageClass: standard
     image:
       name: pangeo/base-notebook
       tag: 2019.09.23
@@ -41,24 +52,17 @@ jupyterhub:
       dask-gateway:
         # This makes the gateway available at ${HUB_URL}/services/dask-gateway
         url: http://web-public-dev-staging-dask-gateway
-
-# Resource specifications
-# -----------------------
-# (specific deployments of this chart should add this section to local helm config)
-#
-#    cpu:
-#      limit: 2
-#      guarantee: 1
-#    memory:
-#      limit: 4G
-#      guarantee: 2G
+  ingress:
+    enabled: true
+    hosts:
+     - js-XXX-YYY.jetstream-cloud.org
 
 dask-kubernetes:
   # Enabling this means to install a Kubernetes ServiceAccount, RoleBinding, and
   # Role which is part of this Helm chart. To fully disable the use of these,
   # you should not only set this enabled flag to false but also set
   # jupyterhub.singleuser.serviceAccountName to null.
-  enabled: false
+  enabled: true
 
 dask-gateway:
   # Enabling this means to install the dask-gateway Helm chart as a dependency.
