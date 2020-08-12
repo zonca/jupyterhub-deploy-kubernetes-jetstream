@@ -1,0 +1,11 @@
+singleuser:
+  image:
+    name: pangeo/base-notebook
+    tag: 2020.07.28
+
+hub:
+  services:
+    dask-gateway:
+      # This makes the gateway available at ${HUB_URL}/services/dask-gateway
+      url: http://traefik-dask-gateway
+      apiToken: "TOKEN"
