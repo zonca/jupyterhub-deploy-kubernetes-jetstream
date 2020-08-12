@@ -1,0 +1,141 @@
+gateway:
+  # Number of instances of the gateway-server to run
+  replicas: 1
+
+  # Path prefix to serve dask-gateway api requests under
+  # This prefix will be added to all routes the gateway manages
+  # in the traefik proxy.
+  prefix: "/services/dask-gateway"
+
+  # The image to use for the gateway-server pod.
+  image:
+    name: daskgateway/dask-gateway-server
+    tag: 0.8.0
+    pullPolicy: IfNotPresent
+
+  auth:
+    # The auth type to use. One of {simple, kerberos, jupyterhub, custom}.
+    type: jupyterhub
+
+    jupyterhub:
+      # A JupyterHub api token for dask-gateway to use. See
+      # https://gateway.dask.org/install-kube.html#authenticating-with-jupyterhub.
+      apiToken: "TOKEN"
+
+  backend:
+    # The image to use for both schedulers and workers.
+    image:
+      name: daskgateway/dask-gateway
+      tag: 0.8.0
+      pullPolicy: IfNotPresent
+
+    # The namespace to launch dask clusters in. If not specified, defaults to
+    # the same namespace the gateway is running in.
+    namespace: null
+
+    # A mapping of environment variables to set for both schedulers and workers.
+    environment: null
+
+    scheduler:
+      # Any extra configuration for the scheduler pod. Sets
+      # `c.KubeClusterConfig.scheduler_extra_pod_config`.
+      extraPodConfig: {}
+
+      # Any extra configuration for the scheduler container.
+      # Sets `c.KubeClusterConfig.scheduler_extra_container_config`.
+      extraContainerConfig: {}
+
+      # Cores request/limit for the scheduler.
+      cores:
+        request: null
+        limit: null
+
+      # Memory request/limit for the scheduler.
+      memory:
+        request: null
+        limit: null
+
+    worker:
+      # Any extra configuration for the worker pod. Sets
+      # `c.KubeClusterConfig.worker_extra_pod_config`.
+      extraPodConfig: {}
+
+      # Any extra configuration for the worker container. Sets
+      # `c.KubeClusterConfig.worker_extra_container_config`.
+      extraContainerConfig: {}
+
+      # Cores request/limit for each worker.
+      cores:
+        request: null
+        limit: null
+
+      # Memory request/limit for each worker.
+      memory:
+        request: null
+        limit: null
+
+  # Any extra configuration code to append to the generated `dask_gateway_config.py`
+  # file. Can be either a single code-block, or a map of key -> code-block
+  # (code-blocks are run in alphabetical order by key, the key value itself is
+  # meaningless). The map version is useful as it supports merging multiple
+  # `values.yaml` files, but is unnecessary in other cases.
+  extraConfig:
+      # Use the mapping form, to support merging multiple values.yaml
+      optionHandler: |
+        from dask_gateway_server.options import Options, Integer, Float, String
+        def option_handler(options):
+            if ":" not in options.image:
+                raise ValueError("When specifying an image you must also provide a tag")
+            return {
+                "worker_cores_limit": options.worker_cores,
+                "worker_cores": min(options.worker_cores / 2, 1),
+                "worker_memory": "%fG" % options.worker_memory,
+                "image": options.image,
+            }
+        c.Backend.cluster_options = Options(
+            Integer("worker_cores", 2, min=1, max=4, label="Worker Cores"),
+            Float("worker_memory", 4, min=1, max=10, label="Worker Memory (GiB)"),
+            String("image", default="daskgateway/dask-gateway:latest", label="Image"),
+            handler=option_handler,
+        )
+
+# Configuration for the gateway controller
+controller:
+  # Whether the controller should be deployed. Disabling the controller allows
+  # running it locally for development/debugging purposes.
+  enabled: true
+
+  # Max time (in seconds) to keep around records of completed clusters.
+  # Default is 24 hours.
+  completedClusterMaxAge: 86400
+
+  # Time (in seconds) between cleanup tasks removing records of completed
+  # clusters. Default is 5 minutes.
+  completedClusterCleanupPeriod: 600
+
+  # The image to use for the controller pod.
+  image:
+    name: daskgateway/dask-gateway-server
+    tag: 0.8.0
+    pullPolicy: IfNotPresent
+
+# Configuration for the traefik proxy
+traefik:
+  # Number of instances of the proxy to run
+  replicas: 1
+
+  # The image to use for the proxy pod
+  image:
+    name: traefik
+    tag: 2.1.3
+
+  # Whether to expose the dashboard on port 9000 (enable for debugging only!)
+  dashboard: false
+
+  # Additional configuration for the traefik service
+  service:
+    type: ClusterIP
+
+rbac:
+  # Whether to enable RBAC.
+  enabled: true
