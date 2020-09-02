@@ -20,7 +20,7 @@ gateway:
     jupyterhub:
       # A JupyterHub api token for dask-gateway to use. See
       # https://gateway.dask.org/install-kube.html#authenticating-with-jupyterhub.
-      apiToken: "TOKEN"
+      # apiToken: "TOKEN"
 
   backend:
     # The image to use for both schedulers and workers.
