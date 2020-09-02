@@ -1,8 +1,3 @@
-singleuser:
-  image:
-    name: pangeo/base-notebook
-    tag: 2020.07.28
-
 hub:
   services:
     dask-gateway:
