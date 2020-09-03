@@ -3,4 +3,4 @@ hub:
     dask-gateway:
       # This makes the gateway available at ${HUB_URL}/services/dask-gateway
       url: http://traefik-dask-gateway
-      # apiToken: "TOKEN"
+      apiToken: "fd20602b65bbf070fa69d6f201a84b0c5ba41acc27032fe9ea492564a9b280da"
