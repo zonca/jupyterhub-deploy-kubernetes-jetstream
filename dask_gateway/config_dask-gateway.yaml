@@ -73,11 +73,23 @@ gateway:
     worker:
       # Any extra configuration for the worker pod. Sets
       # `c.KubeClusterConfig.worker_extra_pod_config`.
-      extraPodConfig: {}
+      extraPodConfig:
+        volumes:
+            - name: cvmfs-nfs-volume
+              nfs:
+                # for Magnum
+                # server: 10.254.77.77
+                # for Kubespray
+                server: 10.233.46.63
+                path: /
 
       # Any extra configuration for the worker container. Sets
       # `c.KubeClusterConfig.worker_extra_container_config`.
-      extraContainerConfig: {}
+      extraContainerConfig:
+        volumeMounts:
+            - name: cvmfs-nfs-volume
+              mountPath: /cvmfs
+              readOnly: false
 
       # Cores request/limit for each worker.
       cores:
