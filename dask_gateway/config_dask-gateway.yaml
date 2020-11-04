@@ -110,7 +110,7 @@ gateway:
         c.Backend.cluster_options = Options(
             Integer("worker_cores", 2, min=1, max=4, label="Worker Cores"),
             Float("worker_memory", 4, min=1, max=10, label="Worker Memory (GiB)"),
-            String("image", default="daskgateway/dask-gateway:latest", label="Image"),
+            String("image", default="zonca/docker-jupyter-cdms-light:2020.07.07", label="Image"),
             handler=option_handler,
         )
 
