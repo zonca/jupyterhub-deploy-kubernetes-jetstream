@@ -141,3 +141,10 @@ ev=getRawEvents(filepath,series)
 ev.head(2)
 ```
 
+## Troubleshooting
+
+### Rebooting the cluster
+
+In case docker is stuck (pods never terminate or don't start), it is useful to reboot the cluster.
+It is fine to just do a `sudo reboot` on the master node.
+After the reboot of the master node is complete and Kubernetes is backup, you need to also reboot the other nodes, otherwise the internal network is broken and any pod running on the nodes cannot connect to the master node.
