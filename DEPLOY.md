@@ -26,24 +26,7 @@ https://github.com/det-lab/jupyterhub-deploy-kubernetes-jetstream/blob/42af7fa9a
 
 [Issue with the discussion about the software environment](https://github.com/det-lab/jupyterhub-deploy-kubernetes-jetstream/issues/3)
 
-First rebuilt the Jupyter Docker stacks out of Centos 7 instead of Ubuntu (see note about OS support below),
-see:
-
-<https://github.com/zonca/jupyter-docker-stacks-centos7>
-
-I build this manually (later will possibly setup autobuild) and push to Docker Hub:
-
-<https://hub.docker.com/repository/docker/zonca/jupyter-docker-stacks-centos7>
-
-We are interested in the image tagged `tensorflow`.
-
-Finally we inherit from that image to create `docker-jupyter-cdms-light`:
-
-<https://github.com/zonca/docker-jupyter-cdms-light>
-
-This is setup with [autobuild on DockerHub](https://hub.docker.com/r/zonca/docker-jupyter-cdms-light), currently doesn't have any customization, but
-we can make pull requests to this repository to add additional packages.
-As examples, checkout the `Dockerfile` files in <https://github.com/zonca/jupyter-docker-stacks-centos7>
+See https://github.com/zonca/docker-jupyter-cdms-light
 
 ## Software stack via CVMFS
 
