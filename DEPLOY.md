@@ -41,7 +41,7 @@ Finally we inherit from that image to create `docker-jupyter-cdms-light`:
 
 <https://github.com/zonca/docker-jupyter-cdms-light>
 
-This is setup with autobuild, currently doesn't have any customization, but
+This is setup with [autobuild on DockerHub](https://hub.docker.com/r/zonca/docker-jupyter-cdms-light), currently doesn't have any customization, but
 we can make pull requests to this repository to add additional packages.
 As examples, checkout the `Dockerfile` files in <https://github.com/zonca/jupyter-docker-stacks-centos7>
 
