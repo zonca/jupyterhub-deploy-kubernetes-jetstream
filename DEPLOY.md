@@ -101,6 +101,8 @@ making sure you get the current address of the master node, also from the secret
 
 [Issue with more details](https://github.com/det-lab/jupyterhub-deploy-kubernetes-jetstream/issues/2#issuecomment-567164886)
 
+see also [this discussion about renewal](https://github.com/det-lab/jupyterhub-deploy-kubernetes-jetstream/issues/41#issuecomment-754254296)
+
 ## Other documentation
 
 How to run the CDMS container:
