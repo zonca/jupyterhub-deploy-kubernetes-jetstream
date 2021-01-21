@@ -17,8 +17,12 @@ hub:
 
 proxy:
   # run only on master nodes
-  nodeSelector:
-        node-role.kubernetes.io/master: ""
+  chp:
+      nodeSelector:
+            node-role.kubernetes.io/master: ""
+      tolerations:
+          - key: "node-role.kubernetes.io/master"
+            operator: Exists
 
 singleuser:
   memory:
