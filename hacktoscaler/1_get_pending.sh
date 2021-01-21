@@ -1,0 +1,1 @@
+kubectl -n jhub get pods --field-selector=status.phase=Pending -l "component=singleuser-server" -o jsonpath='{"name;time;message\n"}{range .items[*]}{@.metadata.name}{";"}{@.status.conditions[*].lastTransitionTime}{";"}{@.status.conditions[*].message}{"\n"}{end}' > pending_pods.txt
