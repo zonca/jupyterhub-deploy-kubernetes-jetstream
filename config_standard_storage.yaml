@@ -9,6 +9,9 @@ hub:
   # run only on master nodes
   nodeSelector:
         node-role.kubernetes.io/master: ""
+  tolerations:
+      - key: "node-role.kubernetes.io/master"
+        operator: Exists
 
 proxy:
   # run only on master nodes
