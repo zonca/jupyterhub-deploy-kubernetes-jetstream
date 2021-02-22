@@ -25,8 +25,8 @@ gateway:
   backend:
     # The image to use for both schedulers and workers.
     image:
-      name: daskgateway/dask-gateway
-      tag: 0.8.0
+      name: "zonca/docker-jupyter-cdms-light"
+      tag: "2020.11.25"
       pullPolicy: IfNotPresent
 
     # The namespace to launch dask clusters in. If not specified, defaults to
@@ -34,16 +34,31 @@ gateway:
     namespace: null
 
     # A mapping of environment variables to set for both schedulers and workers.
-    environment: null
+    environment:
+        PYTHONPATH: /cvmfs/cdms.opensciencegrid.org/releases/centos7/V03-06//lib/python3.6/site-packages:/cvmfs/sft.cern.ch/lcg/releases/ROOT/6.18.00-885ca/x86_64-centos7-gcc8-opt/lib:/cvmfs/sft.cern.ch/lcg/views/LCG_96python3/x86_64-centos7-gcc8-opt/lib:/cvmfs/sft.cern.ch/lcg/views/LCG_96python3/x86_64-centos7-gcc8-opt/lib/python3.6/site-packages
+        'LD_LIBRARY_PATH': /cvmfs/cdms.opensciencegrid.org/releases/centos7/V03-06/IOLibrary/lib:/cvmfs/cdms.opensciencegrid.org/releases/centos7/V03-06/lib:/cvmfs/cdms.opensciencegrid.org/releases/centos7/V03-06/lib/Linux-g++:/cvmfs/sft.cern.ch/lcg/releases/qt5/5.12.1-a1c24/x86_64-centos7-gcc8-opt/lib:/cvmfs/sft.cern.ch/lcg/releases/clhep/2.4.1.0-2c56f/x86_64-centos7-gcc8-opt/lib:/cvmfs/sft.cern.ch/lcg/releases/Geant4/10.05.p01-9e420/x86_64-centos7-gcc8-opt/lib64:/cvmfs/sft.cern.ch/lcg/releases/ROOT/6.18.00-885ca/x86_64-centos7-gcc8-opt/lib:/cvmfs/sft.cern.ch/lcg/views/LCG_96python3/x86_64-centos7-gcc8-opt/lib/python3.6/site-packages/tensorflow:/cvmfs/sft.cern.ch/lcg/views/LCG_96python3/x86_64-centos7-gcc8-opt/lib/python3.6/site-packages/tensorflow/contrib/tensor_forest:/cvmfs/sft.cern.ch/lcg/views/LCG_96python3/x86_64-centos7-gcc8-opt/lib/python3.6/site-packages/tensorflow/python/framework:/cvmfs/sft.cern.ch/lcg/releases/java/8u91-ae32f/x86_64-centos7-gcc8-opt/jre/lib/amd64:/cvmfs/sft.cern.ch/lcg/views/LCG_96python3/x86_64-centos7-gcc8-opt/lib64:/cvmfs/sft.cern.ch/lcg/views/LCG_96python3/x86_64-centos7-gcc8-opt/lib:/cvmfs/sft.cern.ch/lcg/releases/gcc/8.3.0-cebb0/x86_64-centos7/lib:/cvmfs/sft.cern.ch/lcg/releases/gcc/8.3.0-cebb0/x86_64-centos7/lib64:/cvmfs/sft.cern.ch/lcg/releases/binutils/2.30-e5b21/x86_64-centos7/lib:/cvmfs/cdms.opensciencegrid.org/releases/centos7/V03-06/lib:/cvmfs/sft.cern.ch/lcg/releases/R/3.5.3-883db/x86_64-centos7-gcc8-opt/lib64/R/library/readr/rcon:/lib64
+        PATH: /cvmfs/cdms.opensciencegrid.org/releases/centos7/V03-06/radsrc/bin:/cvmfs/cdms.opensciencegrid.org/releases/centos7/V03-06/bin/Linux-g++:/cvmfs/sft.cern.ch/lcg/releases/Geant4/10.05.p01-9e420/x86_64-centos7-gcc8-opt/bin:/cvmfs/sft.cern.ch/lcg/releases/ROOT/6.18.00-885ca/x86_64-centos7-gcc8-opt/bin:/cvmfs/sft.cern.ch/lcg/views/LCG_96python3/x86_64-centos7-gcc8-opt/bin:/cvmfs/sft.cern.ch/lcg/releases/gcc/8.3.0-cebb0/x86_64-centos7/bin:/cvmfs/sft.cern.ch/lcg/releases/binutils/2.30-e5b21/x86_64-centos7/bin:/cvmfs/cdms.opensciencegrid.org/releases/centos7/V03-06/bin:/opt/conda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
     scheduler:
       # Any extra configuration for the scheduler pod. Sets
       # `c.KubeClusterConfig.scheduler_extra_pod_config`.
-      extraPodConfig: {}
+      extraPodConfig:
+        volumes:
+            - name: cvmfs-nfs-volume
+              nfs:
+                # for Magnum
+                # server: 10.254.77.77
+                # for Kubespray
+                server: 10.233.46.63
+                path: /
 
       # Any extra configuration for the scheduler container.
       # Sets `c.KubeClusterConfig.scheduler_extra_container_config`.
-      extraContainerConfig: {}
+      extraContainerConfig:
+        volumeMounts:
+            - name: cvmfs-nfs-volume
+              mountPath: /cvmfs
+              readOnly: false
 
       # Cores request/limit for the scheduler.
       cores:
@@ -58,11 +73,23 @@ gateway:
     worker:
       # Any extra configuration for the worker pod. Sets
       # `c.KubeClusterConfig.worker_extra_pod_config`.
-      extraPodConfig: {}
+      extraPodConfig:
+        volumes:
+            - name: cvmfs-nfs-volume
+              nfs:
+                # for Magnum
+                # server: 10.254.77.77
+                # for Kubespray
+                server: 10.233.46.63
+                path: /
 
       # Any extra configuration for the worker container. Sets
       # `c.KubeClusterConfig.worker_extra_container_config`.
-      extraContainerConfig: {}
+      extraContainerConfig:
+        volumeMounts:
+            - name: cvmfs-nfs-volume
+              mountPath: /cvmfs
+              readOnly: false
 
       # Cores request/limit for each worker.
       cores:
@@ -95,7 +122,7 @@ gateway:
         c.Backend.cluster_options = Options(
             Integer("worker_cores", 2, min=1, max=4, label="Worker Cores"),
             Float("worker_memory", 4, min=1, max=10, label="Worker Memory (GiB)"),
-            String("image", default="daskgateway/dask-gateway:latest", label="Image"),
+            String("image", default="zonca/docker-jupyter-cdms-light:2020.11.25", label="Image"),
             handler=option_handler,
         )
 

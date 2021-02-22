@@ -16,8 +16,7 @@ spec:
   # and write the date to a file inside it.
   containers:
     - name: app
-      #image: centos:centos7
-      image: ubuntu:18.04
+      image: "zonca/docker-jupyter-cdms-light:2020.11.25"
 
       # Mount the NFS volume in the container
       volumeMounts:
