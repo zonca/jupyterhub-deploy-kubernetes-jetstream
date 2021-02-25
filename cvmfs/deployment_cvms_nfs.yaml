@@ -1,0 +1,57 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: cvmfs
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cvmfs
+
+  template:
+    metadata:
+      namespace: default
+      labels:
+        app: cvmfs
+        role: nfs
+    spec:
+      volumes:
+          - name: cvmfs-cache-volume
+            persistentVolumeClaim:
+              claimName: cvmfs-cache-pv-claim
+          - name: cvmfs-folder
+            persistentVolumeClaim:
+              claimName: cvmfs-folder-claim
+          - name: data-volume
+            persistentVolumeClaim:
+              claimName: data-pv-claim
+      restartPolicy: Always
+      tolerations:
+          - key: "node-role.kubernetes.io/master"
+            operator: "Exists"
+            effect: "NoSchedule"
+      containers:
+          - image: zonca/cvmfs-client-nfs
+            imagePullPolicy: Always
+            name: cvmfs-client-nfs
+            volumeMounts:
+                - name: cvmfs-cache-volume
+                  mountPath: /var/lib/cvmfs
+                # This is not actually storing any data, it is only the root folder for NFS sharing
+                # and cannot be on Docker's overlayFS, so using a small volume.
+                - name: cvmfs-folder
+                  mountPath: /cvmfs
+                - name: data-volume
+                  mountPath: /cvmfs/data
+            securityContext:
+                privileged: true
+            env:
+                - name: CVMFS_REPOSITORIES
+                  value: "config-osg.opensciencegrid.org cdms.opensciencegrid.org sft.cern.ch geant4.cern.ch"
+                - name: READ_ONLY
+                  value: ""
+                - name: SYNC
+                  value: ""
+            securityContext:
+                privileged: true
