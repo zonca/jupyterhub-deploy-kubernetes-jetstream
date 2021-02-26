@@ -54,6 +54,9 @@ Follow instruction in the [README.md](https://github.com/det-lab/jupyterhub-depl
 For kubespray, set:
 
     supplementary_addresses_in_ssl_keys: [149.165.156.119]
+
+    k8s_master_fips = ["149.165.156.119"]
+
     
 in `k8s-cluster.yml` before running ansible.
    
