@@ -13,11 +13,12 @@ The persistent volumes do not have labels, so first print out the pvc:
 Then copy paste the desired IDs from the VOLUME column:
 
     kubectl -n jhub get pv ID1 ID2 ID3 -o yaml > pv.yaml
-    
+
 ## Tear down JupyterHub and NGINX
 
-* `helm delete --purge jhub nginx`
+* `helm -n jhub delete dask-gateway jhub`
 * **DO NOT DELETE THE NAMESPACE TO PRESERVE THE USER DISKS** `k delete namespace jhub`
+* Check that the persistent volumes are still there with `kubectl -n jhub get pvc`
 
 ## Save the data volume
 
@@ -33,9 +34,16 @@ so let's stop the instance first:
 
 `openstack server stop`
 
-`bash delete_cluster.sh`
+Save the floating IP:
 
-Now delete all the volumes that are still in Openstack, probably due to old deployments not properly teared down.
+    openstack server remove floating ip zonca-k8s-master-1 149.165.156.119
+
+Delete the cluster with Magnum or Terraform. If this doesn't work,
+delete manually from Horizon, to delete the network components, first open the network topology,
+click on the networks and "delete interfaces", after that you can delete the networks and the
+routers.
+
+Check in openstack if there are volumes that needs to be deleted.
 
 Sometimes volumes are stuck in "Deleting" or "Reserved" state, email xsede to delete them.
 
