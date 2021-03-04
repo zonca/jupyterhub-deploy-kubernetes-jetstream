@@ -92,6 +92,7 @@ Test SSH connection with `ssh_data.sh`
 ## Restore the user storage
 
 First we need to remove all the `claimRef` section from each of the volumes in `pv.yaml` otherwise they will show an error and all the PVC will be lost.
+Also need to change the reclaim policy to RETAIN.
 
     kubectl create -f pv.yaml
     kubectl create -f pvc.yaml
