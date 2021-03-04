@@ -1,4 +1,4 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: grafana
@@ -8,14 +8,17 @@ metadata:
     cert-manager.io/issuer: "letsencrypt"
 spec:
   rules:
-  - host: js-xxx-yyy.jetstream-cloud.org
+  - host: js-XXX-YYY.jetstream-cloud.org
     http:
       paths:
       - backend:
-          serviceName: grafana
-          servicePort: 3000
+          service:
+            name: grafana
+            port:
+              number: 3000
         path: /
+        pathType: Prefix
   tls:
   - hosts:
-      - js-xxx-yyy.jetstream-cloud.org
+      - js-XXX-YYY.jetstream-cloud.org
     secretName: certmanager-tls-grafana
