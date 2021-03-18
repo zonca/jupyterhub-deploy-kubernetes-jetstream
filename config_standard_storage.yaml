@@ -32,18 +32,18 @@ singleuser:
       guarantee: 5G
       limit: 5G
   cpu:
-      guarantee: 5
-      limit: 5
+      guarantee: 2
+      limit: 6
   profileList:
-    - display_name: "Default: 4 CPUs and 5 GB RAM"
+    - display_name: "Default: 2-6 CPUs and 5 GB RAM"
       default: True
-    - display_name: "Tiny: 1 CPUs and 3 GB RAM"
+    - display_name: "Tiny: 1-3 CPUs and 3 GB RAM"
       kubespawner_override:
-        cpu_limit: 1
+        cpu_limit: 3
         cpu_guarantee: 1
         mem_limit: 3G
         mem_guarantee: 3G
-    - display_name: "Full node: 20 CPUs and 50 GB RAM"
+    - display_name: "Full node: 20-24 CPUs and 50 GB RAM"
       kubespawner_override:
         cpu_limit: 24
         cpu_guarantee: 20
