@@ -68,7 +68,7 @@ singleuser:
           readOnly: false
   image:
     name: "zonca/docker-jupyter-cdms-light"
-    tag: "2020.11.25"
+    tag: "2021.03.17"
   defaultUrl: "/lab"
   # default is 300s, sometimes Jetstream volumes are slow to attach
   startTimeout: 600
