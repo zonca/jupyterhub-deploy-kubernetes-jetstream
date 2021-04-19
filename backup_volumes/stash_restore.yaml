@@ -1,0 +1,17 @@
+apiVersion: stash.appscode.com/v1beta1
+kind: RestoreSession
+metadata:
+  name: restore
+  namespace: jhub
+spec:
+  task:
+    name: pvc-restore
+  repository:
+    name: osn-repo
+  target:
+    ref:
+      apiVersion: v1
+      kind: PersistentVolumeClaim
+      name: claim-zonca
+    rules:
+    - snapshots: ["latest"]
