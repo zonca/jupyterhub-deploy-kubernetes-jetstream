@@ -1,0 +1,12 @@
+apiVersion: stash.appscode.com/v1alpha1
+kind: Repository
+metadata:
+  name: osn-repo
+  namespace: jhub
+spec:
+  backend:
+    s3:
+      endpoint: https://xxxx.osn.xsede.org
+      bucket: your-bucket-name
+      prefix: /jetstream-backup/
+    storageSecretName: s3-secret
