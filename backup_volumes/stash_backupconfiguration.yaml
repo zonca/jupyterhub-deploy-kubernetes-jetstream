@@ -12,6 +12,11 @@ spec:
   schedule: "* * * * *" # backup at every minutes
   paused: false
   backupHistoryLimit: 3
+  runtimeSettings:
+    container:
+      securityContext:
+        runAsUser: 1000
+  #      runAsGroup: 1000
   target:
     exclude:
     - /stash-data/lost+found
