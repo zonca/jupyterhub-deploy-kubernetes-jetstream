@@ -15,6 +15,7 @@ spec:
   target:
     exclude:
     - /stash-data/lost+found
+    - /stash-data/.local/share/jupyter
     ref:
       apiVersion: v1
       kind: PersistentVolumeClaim
