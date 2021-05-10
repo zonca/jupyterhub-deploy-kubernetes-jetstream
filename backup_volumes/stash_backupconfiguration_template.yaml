@@ -1,0 +1,31 @@
+apiVersion: stash.appscode.com/v1beta1
+kind: BackupConfiguration
+metadata:
+  name: backup-$USER
+  namespace: jhub
+spec:
+  driver: Restic
+  repository:
+    name: osn-repo
+  task:
+    name: pvc-backup
+  schedule: '${MIN} ${HOUR} * * *'
+  paused: false
+  backupHistoryLimit: 3
+  runtimeSettings:
+    container:
+      securityContext:
+        runAsUser: 1000
+  target:
+    exclude:
+    - /stash-data/lost+found
+    ref:
+      apiVersion: v1
+      kind: PersistentVolumeClaim
+      name: claim-$USER
+  retentionPolicy:
+    name: 'retention-policy-${USER}'
+    keepLast: 6
+    keepWeekly: 7
+    keepMonthly: 12
+    prune: true
