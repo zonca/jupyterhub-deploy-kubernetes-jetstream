@@ -16,11 +16,9 @@ spec:
     container:
       securityContext:
         runAsUser: 1000
-  #      runAsGroup: 1000
   target:
     exclude:
     - /stash-data/lost+found
-    - /stash-data/.local/share/jupyter
     ref:
       apiVersion: v1
       kind: PersistentVolumeClaim
