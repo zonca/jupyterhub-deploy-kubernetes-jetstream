@@ -8,7 +8,7 @@ spec:
   repository:
     name: osn-repo
   task:
-    name: pvc-backup
+    name: pvc-backup-$USER
   schedule: '${MIN} ${HOUR} * * *'
   paused: false
   backupHistoryLimit: 3
@@ -24,7 +24,7 @@ spec:
       kind: PersistentVolumeClaim
       name: claim-$USER
   retentionPolicy:
-    name: 'retention-policy-${USER}'
+    name: retention-policy-$USER
     keepLast: 6
     keepWeekly: 7
     keepMonthly: 12
