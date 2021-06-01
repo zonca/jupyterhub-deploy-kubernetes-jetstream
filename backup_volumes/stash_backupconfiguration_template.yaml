@@ -23,3 +23,7 @@ spec:
       apiVersion: v1
       kind: PersistentVolumeClaim
       name: claim-$USER
+  retentionPolicy:
+    name: retention-policy
+    keepLast: 5000
+    prune: true
