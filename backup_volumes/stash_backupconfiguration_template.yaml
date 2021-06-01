@@ -8,7 +8,7 @@ spec:
   repository:
     name: osn-repo
   task:
-    name: pvc-backup-$USER
+    name: pvc-backup
   schedule: '${MIN} ${HOUR} * * *'
   paused: false
   backupHistoryLimit: 3
