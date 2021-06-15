@@ -9,8 +9,13 @@ VAR=$($OPENSTACK volume list -f value -c ID -c Status | grep -i reserved | wc -l
 
 if [[ $VAR -gt 0 ]]
 then
-    echo $(date) >> $DIR/volume_reserved.log
-    $OPENSTACK volume list | grep -i reserved >> $DIR/volume_reserved.log
-    $OPENSTACK volume list -f value -c ID -c Status | grep -i reserved | awk \
-        '{ print $1 }' | xargs -n1 $OPENSTACK volume set --state available
+    sleep 30s
+    VAR=$($OPENSTACK volume list -f value -c ID -c Status | grep -i reserved | wc -l)
+    if [[ $VAR -gt 0 ]]
+    then
+        echo $(date) >> $DIR/volume_reserved.log
+        $OPENSTACK volume list | grep -i reserved >> $DIR/volume_reserved.log
+        $OPENSTACK volume list -f value -c ID -c Status | grep -i reserved | awk \
+            '{ print $1 }' | xargs -n1 $OPENSTACK volume set --state available
+    fi
 fi
