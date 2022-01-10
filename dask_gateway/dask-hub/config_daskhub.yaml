@@ -7,6 +7,9 @@ jupyterhub:
   # JupyterHub configuration goes here.
   # See https://github.com/jupyterhub/zero-to-jupyterhub-k8s/blob/master/jupyterhub/values.yaml
   hub:
+    services:
+      dask-gateway:
+        apiToken: "bdd355fa21a11309d4c78bb0ad4c7358a282d2756b692b0b3bb4ed242317e45d"
     extraConfig:
       # Register Dask Gateway service and setup singleuser environment.
       00-add-dask-gateway-values: |
@@ -95,6 +98,8 @@ dask-gateway:
     prefix: "/services/dask-gateway"  # Users connect to the Gateway through the JupyterHub service.
     auth:
       type: jupyterhub  # Use JupyterHub to authenticate with Dask Gateway
+      jupyterhub:
+        apiToken: "bdd355fa21a11309d4c78bb0ad4c7358a282d2756b692b0b3bb4ed242317e45d"
   traefik:
     service:
       type: ClusterIP  # Access Dask Gateway through JupyterHub. To access the Gateway from outside JupyterHub, this must be changed to a `LoadBalancer`.
