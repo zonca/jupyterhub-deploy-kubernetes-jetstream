@@ -80,6 +80,12 @@ jupyterhub:
                chmod g-s .ssh;
                chmod 600 .ssh/*;
                exit 0
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: "nginx"
+    hosts:
+         - js-171.113.jetstream-cloud.org
 
 dask-gateway:
   enabled: true  # Enabling dask-gateway will install Dask Gateway as a dependency.
