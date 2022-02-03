@@ -4,9 +4,21 @@ rbac:
   enabled: true  # Create and use roles and service accounts on an RBAC-enabled cluster.
 
 jupyterhub:
-  # JupyterHub configuration goes here.
-  # See https://github.com/jupyterhub/zero-to-jupyterhub-k8s/blob/master/jupyterhub/values.yaml
+  proxy:
+    # run only on master nodes
+    chp:
+        nodeSelector:
+              node-role.kubernetes.io/master: ""
+        tolerations:
+            - key: "node-role.kubernetes.io/master"
+              operator: Exists
   hub:
+    # run only on master nodes
+    nodeSelector:
+          node-role.kubernetes.io/master: ""
+    tolerations:
+        - key: "node-role.kubernetes.io/master"
+          operator: Exists
     services:
       dask-gateway:
         apiToken: "bdd355fa21a11309d4c78bb0ad4c7358a282d2756b692b0b3bb4ed242317e45d"
@@ -88,7 +100,7 @@ jupyterhub:
     annotations:
       kubernetes.io/ingress.class: "nginx"
     hosts:
-         - js-171.113.jetstream-cloud.org
+         - js-171-113.jetstream-cloud.org
 
 dask-gateway:
   enabled: true  # Enabling dask-gateway will install Dask Gateway as a dependency.
