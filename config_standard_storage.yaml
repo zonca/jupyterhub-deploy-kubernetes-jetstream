@@ -5,27 +5,29 @@ hub:
       accessModes:
         - ReadWriteOnce
       storage: 1Gi
-      storageClassName: standard
-  # run only on master nodes
-  nodeSelector:
-        node-role.kubernetes.io/master: ""
-  extraConfig: |
-    c.Spawner.http_timeout = 90
-    c.Spawner.args = [
-          "--ResourceUseDisplay.track_cpu_percent=True",
-    ]
-  tolerations:
-      - key: "node-role.kubernetes.io/master"
-        operator: Exists
+      storageClassName: cinder-csi
+  extraConfig:
+    timeout.py: |
+        c.Spawner.http_timeout = 90
+    track_cpu.py: |
+        c.Spawner.args = [
+              "--ResourceUseDisplay.track_cpu_percent=True",
+        ]
+#   # run only on master nodes
+#   nodeSelector:
+#         node-role.kubernetes.io/master: ""
+#   tolerations:
+#       - key: "node-role.kubernetes.io/master"
+#         operator: Exists
 
-proxy:
-  # run only on master nodes
-  chp:
-      nodeSelector:
-            node-role.kubernetes.io/master: ""
-      tolerations:
-          - key: "node-role.kubernetes.io/master"
-            operator: Exists
+# proxy:
+#   # run only on master nodes
+#   chp:
+#       nodeSelector:
+#             node-role.kubernetes.io/master: ""
+#       tolerations:
+#           - key: "node-role.kubernetes.io/master"
+#             operator: Exists
 
 singleuser:
   memory:
@@ -53,7 +55,7 @@ singleuser:
     type: dynamic
     capacity: 10Gi
     dynamic:
-      storageClass: standard
+      storageClass: cinder-csi
     extraVolumes:
         - name: cvmfs-nfs-volume
           nfs:

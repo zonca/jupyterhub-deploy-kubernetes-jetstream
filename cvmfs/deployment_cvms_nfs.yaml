@@ -27,10 +27,6 @@ spec:
             persistentVolumeClaim:
               claimName: data-pv-claim
       restartPolicy: Always
-      tolerations:
-          - key: "node-role.kubernetes.io/master"
-            operator: "Exists"
-            effect: "NoSchedule"
       containers:
           - image: zonca/cvmfs-client-nfs
             imagePullPolicy: Always

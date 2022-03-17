@@ -6,7 +6,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: standard
+  storageClassName: cinder-csi
   resources:
     requests:
       storage: 500Gi
