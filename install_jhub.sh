@@ -3,5 +3,5 @@ NAMESPACE=jhub
 
 helm upgrade --install $RELEASE jupyterhub/jupyterhub \
       --namespace $NAMESPACE  \
-      --values config_standard_storage.yaml --values secrets.yaml \
-      --version 1.2.0
+      --version 1.2.0 \
+      --values config_standard_storage.yaml --values secrets.yaml
