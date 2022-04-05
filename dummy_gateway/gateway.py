@@ -1,29 +1,57 @@
 from flask import Flask
 import sys
 import s3fs
-import xarray as xr
 import numpy as np
 import subprocess
 import os
+import zarr
+import dask.array as da
+import dask
+from dask_gateway import Gateway
 
-app = Flask(__name__)
+def create_app(test_config=None):
+    app = Flask(__name__)
 
-@app.route("/")
-def hello():
 
-    return "Gateway up and running!\n"
+    gateway = Gateway(
+        address="http://traefik-dask-gateway.jhub/services/dask-gateway/",
+        public_address="https://sg.zonca.dev/services/dask-gateway/",
+        auth="jupyterhub",
+    )
+    options = gateway.cluster_options()
+    options["image"] = "zonca/dask-gateway-zarr:latest"
+    cluster = gateway.new_cluster(options)
+    cluster.scale(3)
 
-@app.route("/submit_job/<job_id>")
-def submit_job(job_id):
-    #fs = s3fs.S3FileSystem(use_ssl=True, client_kwargs=dict(endpoint_url="https://tacc.jetstream-cloud.org:8080", region_name="RegionOne"))
-    #d = s3fs.S3Map("gateway_results/{}".format(job_id), s3=fs, create=False)
-    ds = xr.Dataset({'foo': np.zeros(10), 'bar': ('x', [1, 2]), 'baz': np.pi})
-    out = "{}.nc".format(job_id)
-    ds.to_netcdf(out, mode='w')
-    subprocess.run("openstack object create dummy_gateway {}".format(out).split())
-    os.remove(out)
+    @app.route("/")
+    def hello():
 
-    return "Submitted job {}\n".format(job_id)
+        return "Gateway up and running!\n"
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8000, debug=False)
+
+    @app.route("/submit_job/<job_id>")
+    def submit_job(job_id):
+        import s3fs
+
+        client = cluster.get_client()
+        fs = s3fs.S3FileSystem(
+            use_ssl=True,
+            client_kwargs=dict(
+                endpoint_url="https://js2.jetstream-cloud.org:8001/",
+                region_name="RegionOne",
+            ),
+        )
+        store = s3fs.S3Map(root=f"gateway-results/{job_id}", s3=fs)  # , check=False)
+        z = zarr.empty(
+            shape=(1000, 1000), chunks=(100, 100), dtype="f4", store=store, compression=None
+        )
+        x = da.random.random(size=z.shape, chunks=z.chunks).astype(z.dtype)
+        x.store(z, lock=False)
+
+        return "Submitted job {}\n".format(job_id)
+    return app
+
+
+if __name__ == "__main__":
+    app = create_app()
+    app.run(host="0.0.0.0", port=8000, debug=False)
