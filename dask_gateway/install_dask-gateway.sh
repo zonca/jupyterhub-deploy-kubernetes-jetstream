@@ -1,10 +1,8 @@
 RELEASE=dask-gateway
 NAMESPACE=jhub
-VERSION=0.10.0
 
-helm upgrade --install \
+helm install  \
     --namespace $NAMESPACE \
-    --version $VERSION \
     --values config_dask-gateway.yaml \
     $RELEASE \
-    daskgateway/dask-gateway
+    dask-gateway/resources/helm/dask-gateway/
