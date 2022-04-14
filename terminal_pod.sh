@@ -1,1 +1,1 @@
-kubectl exec -it $1 -- /bin/sh
+kubectl exec -it $1 -n $N -- /bin/sh
