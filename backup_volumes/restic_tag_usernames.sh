@@ -1,4 +1,4 @@
-for id in $(restic snapshots --latest 10 --json | jq -r '.[]["id"]')
+for id in $(restic snapshots --latest 12 --json | jq -r '.[]["id"]')
 do
     echo "**** ID is $id ****"
     username=$(restic dump $id stash-data/.username)
