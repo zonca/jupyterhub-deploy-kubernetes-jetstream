@@ -2,7 +2,7 @@
 # exit when any command fails
 set -e
 current_unix_time=$(date +%s)
-last_backup_date=$(restic snapshots --latest 1 | grep stash | tr -s ' ' | cut -d" " -f2)
+last_backup_date=$(restic snapshots --no-lock --latest 1 | grep stash | tr -s ' ' | cut -d" " -f2)
 # The restic docker image doesn't have jq
 # last_backup_unix_time=$(restic snapshots --json --latest 2 | jq -r '.[-1].time|strptime("%Y-%m-%dT%H:%M:%S.%Z")|mktime')
 last_backup_unix_time=$(date -d $last_backup_date +%s)
