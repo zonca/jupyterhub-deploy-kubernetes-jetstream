@@ -1,4 +1,5 @@
 hub:
+  templateVars: {'announcement_spawn': 'In case of error, please <a href="https://github.com/det-lab/jupyterhub-deploy-kubernetes-jetstream/issues/new">open an issue on Github</a> pasting the entire error message'}
   db:
     type: sqlite-pvc
     pvc:
