@@ -37,13 +37,13 @@ singleuser:
   cpu:
       guarantee: 3
   profileList:
-    - display_name: "Default: 3 CPUs and 6 GB RAM"
+    - display_name: "Default: 3 CPUs and 12 GB RAM"
       default: True
     - display_name: "Tiny: 1 CPUs and 3 GB RAM"
       kubespawner_override:
-        cpu_guarantee: 1
-        mem_limit: 6G
-        mem_guarantee: 6G
+        cpu_guarantee: 0.1
+        mem_limit: 3G
+        mem_guarantee: 3G
     - display_name: "Full node: 7 CPUs and 25 GB RAM"
       kubespawner_override:
         cpu_guarantee: 7
