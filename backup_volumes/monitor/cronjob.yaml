@@ -18,7 +18,7 @@ spec:
             command:
             - /bin/sh
             - -c
-            - /scripts/backup_is_current.sh && wget -q --timeout 10 --tries 5 -O /dev/null https://hc-ping.com/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            - /scripts/backup_is_current.sh && wget -q --post-data 'from=k8scronjob' --timeout 10 --tries 5 -O /dev/null https://hc-ping.com/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             envFrom:
             - secretRef:
                name: s3-secret
@@ -30,5 +30,3 @@ spec:
             configMap:
               name: monitorscripts
               defaultMode: 0744
-
-
