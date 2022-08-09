@@ -1,0 +1,10 @@
+# deploymentPatch.yml referenced in deploymentPatch.sh
+---
+spec:
+  template:
+    spec:
+      nodeSelector:
+        "node-role.kubernetes.io/master": ""
+      tolerations:
+        - key: "node-role.kubernetes.io/master"
+          operator: "Exists"
