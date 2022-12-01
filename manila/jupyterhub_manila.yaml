@@ -1,0 +1,20 @@
+singleuser:
+  storage:
+    extraVolumes:
+        - name: data-volume
+          cephfs:
+            monitors:
+            - 149.165.xxx.xx:xxxx
+            - 149.165.xxx.xx:xxxx
+            - 149.165.xxx.xx:xxxx
+            - 149.165.xxx.xx:xxxx
+            - 149.165.xxx.xx:xxxx
+            user: zonca-manila-share
+            secretRef:
+              name: ceph-secret
+            readOnly: false
+            path: "/volumes/_nogroup/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    extraVolumeMounts:
+        - name: data-volume
+          mountPath: /share
+          readOnly: false
