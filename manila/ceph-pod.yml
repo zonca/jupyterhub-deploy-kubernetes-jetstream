@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ceph
+  namespace: jhub
+spec:
+  containers:
+  - name: cephfs-pod
+    image: httpd:buster
+    volumeMounts:
+    - mountPath: "/mnt/cephfs"
+      name: cephfs
+  volumes:
+  - name: cephfs
+    cephfs:
+      monitors:
+      - 149.165.xxx.xx:xxxx
+      - 149.165.xxx.xx:xxxx
+      - 149.165.xxx.xx:xxxx
+      - 149.165.xxx.xx:xxxx
+      - 149.165.xxx.xx:xxxx
+      user: zonca-manila-share
+      secretRef:
+        name: ceph-secret
+      readOnly: false
+      path: "/volumes/_nogroup/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
