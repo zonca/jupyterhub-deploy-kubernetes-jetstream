@@ -3,6 +3,9 @@ IMAGE = zonca/nvidia-tensorflow-jupyterhub
 build:
 	docker build -t $(IMAGE):${VERSION} .
 
+cleanbuild:
+	docker build --no-cache -t $(IMAGE):${VERSION} .
+
 login:
 	docker login
 
