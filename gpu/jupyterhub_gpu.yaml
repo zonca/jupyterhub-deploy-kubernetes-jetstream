@@ -1,0 +1,36 @@
+singleuser:
+  profileList:
+    - display_name: "GPU Server"
+      description: "Spawns a notebook server with access to a GPU"
+      kubespawner_override:
+        extra_resource_limits:
+          nvidia.com/gpu: "1"
+    - display_name: "CPU Server"
+      description: "Spawns a standard notebook server"
+  image:
+      name: zonca/nvidia-tensorflow-jupyterhub
+      tag: "23.1.5"
+  # very small limits for testing on small instances
+  memory:
+    guarantee: 5G
+    limit: 5G
+  cpu:
+    guarantee: 0.3
+    limit: 1
+  storage:
+    type: dynamic
+    capacity: 1Gi
+  # default is 300s, sometimes Jetstream volumes are slow to attach
+  startTimeout: 600
+  # See https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream/issues/38
+  lifecycleHooks:
+    postStart:
+      exec:
+        command:
+           - "sh"
+           - "-c"
+           - >
+             chmod 700 .ssh;
+             chmod g-s .ssh;
+             chmod 600 .ssh/*;
+             exit 0
