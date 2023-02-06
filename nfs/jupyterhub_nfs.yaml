@@ -4,9 +4,9 @@ singleuser:
         - name: nfs-volume
           nfs:
               # for Magnum
-              server: 10.254.204.67
+              # server: 10.254.204.67
               # for Kubespray
-              # server: 10.233.46.63
+              server: 10.233.46.63
               path: /
     extraVolumeMounts:
         - name: nfs-volume
