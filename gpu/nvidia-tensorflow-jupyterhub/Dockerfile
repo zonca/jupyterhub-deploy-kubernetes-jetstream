@@ -1,5 +1,6 @@
 FROM nvcr.io/nvidia/tensorflow:22.04-tf2-py3
-RUN pip install --no-cache-dir jupyter_server jupyterhub==1.5.0 jupyterlab
+RUN pip install --no-cache-dir jupyterhub==3.0.0
+RUN pip install --no-cache-dir --upgrade jupyterlab notebook jupyter_server
 
 # Initialization of user copied from:
 # https://github.com/jupyter/docker-stacks/blob/main/docker-stacks-foundation/Dockerfile
