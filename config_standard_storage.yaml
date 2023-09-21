@@ -6,6 +6,10 @@ hub:
         - ReadWriteOnce
       storage: 1Gi
 
+proxy:
+  service:
+    type: ClusterIP
+
 singleuser:
   defaultUrl: "/lab"
   extraEnv:
