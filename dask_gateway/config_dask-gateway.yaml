@@ -2,7 +2,7 @@ gateway:
   # Path prefix to serve dask-gateway api requests under
   # This prefix will be added to all routes the gateway manages
   # in the traefik proxy.
-  prefix: "/services/dask-gateway"
+  #prefix: "/services/dask-gateway"
 
   # Number of instances of the gateway-server to run
   replicas: 1
@@ -10,9 +10,6 @@ gateway:
   auth:
     # The auth type to use. One of {simple, kerberos, jupyterhub, custom}.
     type: jupyterhub
-
-    jupyterhub:
-      apiToken: "TOKEN"
 
   extraConfig:
     # Note that the key name here doesn't matter. Values in the
@@ -30,11 +27,11 @@ gateway:
         c.Backend.cluster_options = Options(
             Integer("worker_cores", 2, min=1, max=4, label="Worker Cores"),
             Float("worker_memory", 4, min=1, max=8, label="Worker Memory (GiB)"),
-            String("image", default="ghcr.io/dask/dask-gateway:2022.4.0", label="Image"),
+            String("image", default="ghcr.io/dask/dask-gateway:2023.9.0", label="Image"),
             handler=option_handler,
         )
-
-
-rbac:
-  # Whether to enable RBAC.
-  enabled: true
+        #c.KubeClusterConfig.worker_extra_container_config = {
+        #        "envFrom": [
+        #                    {"secretRef": {"name": "awsconfig"}}
+        #                        ]
+        #                    }
