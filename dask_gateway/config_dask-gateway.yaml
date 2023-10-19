@@ -30,6 +30,8 @@ gateway:
             String("image", default="ghcr.io/dask/dask-gateway:2023.9.0", label="Image"),
             handler=option_handler,
         )
+        c.ClusterConfig.cluster_max_cores = 16
+        c.ClusterConfig.cluster_max_memory = "35 G"
         #c.KubeClusterConfig.worker_extra_container_config = {
         #        "envFrom": [
         #                    {"secretRef": {"name": "awsconfig"}}
