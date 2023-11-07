@@ -12,15 +12,18 @@ proxy:
 
 singleuser:
   defaultUrl: "/lab"
+  image:
+    name: "jupyter/scipy-notebook"
+    tag: "2023-10-02"
   extraEnv:
     JUPYTERHUB_SINGLEUSER_APP: "jupyter_server.serverapp.ServerApp"
   # very small limits for testing on small instances
   memory:
-    guarantee: 500M
-    limit: 1G
+    guarantee: 1G
+    limit: 2G
   cpu:
-    guarantee: 0.3
-    limit: 1
+    guarantee: 1
+    limit: 2
   storage:
     type: dynamic
     capacity: 1Gi
