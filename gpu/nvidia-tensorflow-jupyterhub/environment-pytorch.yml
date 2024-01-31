@@ -1,0 +1,19 @@
+name: pytorch
+channels:
+  - conda-forge
+  # Begin pytorch channels  
+  - pytorch
+  - nvidia
+  # End pytorch channels  
+dependencies:
+  # Required by JupyterLab
+  - python=3
+  - nb_conda_kernels
+  - ipykernel
+  # pytorch
+  # Environment file adapted from the instruction found at:
+  # https://pytorch.org/get-started/locally/
+  - pytorch
+  - torchvision
+  - torchaudio
+  - pytorch-cuda=12.1
