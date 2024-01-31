@@ -1,0 +1,14 @@
+name: tensorflow
+channels:
+ - conda-forge
+dependencies:
+  # Required by JupyterLab
+  - python=3
+  - nb_conda_kernels
+  - ipykernel
+  - pip:
+    # Tensorflow dependencies
+    # The [and-cuda] extra is necessary to enable GPU capability
+    # If something doesn't seem right, ensure that your tensorflow, cuda, and
+    # python version match: https://www.tensorflow.org/install/source#gpu
+    - tensorflow[and-cuda]
