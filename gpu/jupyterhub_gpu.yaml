@@ -3,6 +3,11 @@ singleuser:
     - display_name: "GPU Server"
       description: "Spawns a notebook server with access to a GPU"
       kubespawner_override:
+        tolerations:
+            - key: 'gpu'
+              operator: 'Equal'
+              value: 'true'
+              effect: 'NoSchedule'
         extra_resource_limits:
           nvidia.com/gpu: "1"
     - display_name: "CPU Server"
