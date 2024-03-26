@@ -1,0 +1,32 @@
+hub:
+  containerSecurityContext:
+    privileged: true
+    allowPrivilegeEscalation: true
+  db:
+    type: sqlite-pvc
+    pvc:
+      accessModes:
+        - ReadWriteOnce
+      storage: 1Gi
+
+singleuser:
+  defaultUrl: "/lab"
+  extraEnv:
+    JUPYTERHUB_SINGLEUSER_APP: "jupyter_server.serverapp.ServerApp"
+  # very small limits for testing on small instances
+  memory:
+    guarantee: 500M
+    limit: 1G
+  cpu:
+    guarantee: 0.3
+    limit: 1
+  storage:
+    type: dynamic
+    capacity: 1Gi
+  # default is 300s, sometimes Jetstream volumes are slow to attach
+  startTimeout: 600
+  # See https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream/issues/38
+  image:
+    name: "zonca/singularity_jupyterhub"
+    tag: "2023.03.13"
+  cmd: null

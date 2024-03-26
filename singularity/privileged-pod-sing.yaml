@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: jupsingularity
+  namespace: default
+spec:
+  containers:
+  - name: singularity
+    image: zonca/singularity_jupyterhub:2023.03.4
+    #command: ['sh', '-c', 'sleep 999']
+    securityContext:
+       privileged: true
+       allowPrivilegeEscalation: true
