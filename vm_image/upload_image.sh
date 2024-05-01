@@ -1,0 +1,1 @@
+openstack image create --disk-format qcow2 --container-format bare --property visibility=private --property hw_disk_bus=scsi --property hw_scsi_model=virtio-scsi --property hw_qemu_guest_agent=yes --property os_require_quiesce=yes --file flatcar_production_openstack_image.img --progress FlatcarContainerLinux-3815-2-2
