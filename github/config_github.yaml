@@ -1,0 +1,24 @@
+hub:
+  config:
+    GitHubOAuthenticator:
+      client_id: xxxxxxxxxxxxxxxxxxxx
+      client_secret: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+      oauth_callback_url: https://kubejetstream-1.xxxxxxxxx.projects.jetstream-cloud.org/hub/oauth_callback
+      # This allows all Github users to login
+      allow_all: false
+      # This allows to add manually users via the JupyterHub admin panel
+      # useful only if `allow_all` is false
+      allow_existing_users: true
+      # Only allow users from these organizations to join
+      allowed_organizations:
+          - xxxxxx
+      # This asks for extra permissions from OAuth to allow to check
+      # if user is a private member of an organization
+      # Otherwise it will only check for public membership
+      scope:
+          - read:org
+    JupyterHub:
+      authenticator_class: github
+      admin_access: true
+      admin_users:
+        - zonca
