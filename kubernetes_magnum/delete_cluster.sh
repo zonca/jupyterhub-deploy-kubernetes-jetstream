@@ -1,1 +1,1 @@
-openstack coe cluster delete k8s
+openstack coe cluster delete $K8S_CLUSTER_NAME
