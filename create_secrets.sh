@@ -7,8 +7,9 @@ hub:
 proxy:
   secretToken: \"$(openssl rand -hex 32)\"
 
-ingress:
-  enabled: true
-  hosts:
-    - $(hostname)
+# only needed with kubespray
+#ingress:
+#  enabled: true
+#  hosts:
+#    - $(hostname)
 " > secrets.yaml
