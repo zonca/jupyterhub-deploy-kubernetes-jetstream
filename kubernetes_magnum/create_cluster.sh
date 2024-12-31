@@ -27,23 +27,24 @@ openstack coe cluster create --cluster-template $TEMPLATE \
 echo "Waiting for the cluster to become ready..."
 while true; do
     STATUS=$(openstack coe cluster show $K8S_CLUSTER_NAME -f value -c status)
-    echo "Current status: $STATUS"
+    CURRENT=$(date +%s)
+    ELAPSED=$((CURRENT - START))
+    ELAPSED_MINUTES=$((ELAPSED / 60))
+    echo "Time passed: $ELAPSED_MINUTES minutes. Current status: $STATUS"
+    
     if [ "$STATUS" == "CREATE_COMPLETE" ]; then
         break
     elif [ "$STATUS" == "CREATE_FAILED" ]; then
         echo "Cluster creation failed."
         exit 1
     fi
-    sleep 10
+    sleep 60
 done
 
 # End timing
 END=$(date +%s)
 DURATION=$((END - START))
+DURATION_MINUTES=$((DURATION / 60))
 
-# Convert duration to minutes and seconds
-MINUTES=$((DURATION / 60))
-SECONDS=$((DURATION % 60))
-
-# Output the elapsed time
-echo "Cluster creation took $MINUTES minutes and $SECONDS seconds."
+# Output the elapsed time in minutes
+echo "Cluster creation took $DURATION_MINUTES minutes."
