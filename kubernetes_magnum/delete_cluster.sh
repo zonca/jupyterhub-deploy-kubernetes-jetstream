@@ -6,10 +6,6 @@ if [ -z "$K8S_CLUSTER_NAME" ]; then
     exit 1
 fi
 
-# Get the current node count before deletion
-CURRENT_NODE_COUNT=$(openstack coe cluster show $K8S_CLUSTER_NAME -f value -c node_count)
-echo "Current node count before deletion: $CURRENT_NODE_COUNT"
-
 # Start timing
 START=$(date +%s)
 
