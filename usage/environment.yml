@@ -1,0 +1,10 @@
+name: usage-monitoring
+channels:
+ - conda-forge
+ - plotly
+dependencies:
+  - python
+  - matplotlib
+  - pandas
+  - numpy
+  - python-openstackclient
