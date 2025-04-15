@@ -3,6 +3,7 @@
 # We can override the default values of the template
 FLAVOR="m3.small"
 TEMPLATE="kubernetes-1-30-jammy"
+AUTOSCALING=true
 MASTER_FLAVOR=$FLAVOR
 DOCKER_VOLUME_SIZE_GB=10
 
@@ -13,10 +14,16 @@ N_NODES=1
 # Start timing
 START=$(date +%s)
 
+
+
 # Create the cluster
 openstack coe cluster create --cluster-template $TEMPLATE \
     --master-count $N_MASTER --node-count $N_NODES \
     --master-flavor $MASTER_FLAVOR --flavor $FLAVOR \
+    --labels auto_scaling_enabled=$AUTOSCALING \
+    --labels min_node_count=1 \
+    --labels max_node_count=5 \
+    --labels ingress_controller=nginx \
     --docker-volume-size $DOCKER_VOLUME_SIZE_GB \
     $K8S_CLUSTER_NAME
 
