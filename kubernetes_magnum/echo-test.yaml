@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echo-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: echo-app # Label selector for pods
+  template:
+    metadata:
+      labels:
+        app: echo-app # Label applied to pods
+    spec:
+      containers:
+      - name: echo-container
+        # Using hashicorp/http-echo image, which listens on port 5678
+        image: hashicorp/http-echo:latest
+        args:
+          - "-text=Testing NGINX Ingress on Jetstream!" # Text the server will respond with
+        ports:
+        - containerPort: 5678 # Port the echo server listens on
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: echo-service
+spec:
+  selector:
+    app: echo-app # Selects pods from the echo-deployment
+  ports:
+  - protocol: TCP
+    port: 80        # Service listens on standard HTTP port 80
+    targetPort: 5678  # Forward traffic to the container's port 5678
+  type: ClusterIP
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: echo-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: "testpage.cis230085.projects.jetstream-cloud.org"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: echo-service # Target the echo-service
+            port:
+              number: 80       # Target the service's port 80
