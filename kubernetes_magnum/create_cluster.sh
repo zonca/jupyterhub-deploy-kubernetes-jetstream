@@ -23,7 +23,7 @@ openstack coe cluster create --cluster-template $TEMPLATE \
     --labels auto_scaling_enabled=$AUTOSCALING \
     --labels min_node_count=1 \
     --labels max_node_count=5 \
-    --labels ingress_controller=nginx \
+    --fixed-network auto_allocated_network \
     --docker-volume-size $DOCKER_VOLUME_SIZE_GB \
     $K8S_CLUSTER_NAME
 
