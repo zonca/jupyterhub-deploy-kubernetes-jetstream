@@ -7,7 +7,7 @@ spec:
     role: nfs
   # NFS volume does not support DNS, so choosing a IP
   # for Magnum
-  # clusterIP: 10.254.204.67
+  # clusterIP: 172.24.46.63
   # for Kubespray
   clusterIP: 10.233.46.63
   ports:
