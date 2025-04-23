@@ -10,9 +10,9 @@ spec:
      #  claimName: nfs-shared-volume-claim
       nfs:
         # for Magnum
-        # server: 10.254.204.67
+        server: 172.24.46.63
         # for Kubespray
-        server: 10.233.46.63
+        # server: 10.233.46.63
         path: /
 
   # In this container, we'll mount the NFS volume
