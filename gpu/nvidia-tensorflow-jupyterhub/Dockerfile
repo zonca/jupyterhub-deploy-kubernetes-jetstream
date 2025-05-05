@@ -1,36 +1,31 @@
-FROM nvcr.io/nvidia/tensorflow:22.04-tf2-py3
-RUN pip install --no-cache-dir jupyterhub==3.0.0
-RUN pip install --no-cache-dir --upgrade jupyterlab notebook jupyter_server
+ARG BASE_CONTAINER=jupyter/minimal-notebook
+FROM $BASE_CONTAINER
 
-# Initialization of user copied from:
-# https://github.com/jupyter/docker-stacks/blob/main/docker-stacks-foundation/Dockerfile
-
-ARG NB_USER="jovyan"
-ARG NB_UID="1000"
-ARG NB_GID="100"
-
-# Fix: https://github.com/hadolint/hadolint/wiki/DL4006
-# Fix: https://github.com/koalaman/shellcheck/wiki/SC3014
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-
+# Install any additional system packages
 USER root
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends vim curl && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
-COPY fix-permissions /usr/local/bin/fix-permissions
-RUN chmod a+rx /usr/local/bin/fix-permissions
+USER $NB_UID
 
-ENV HOME="/home/${NB_USER}"
-
-# Enable prompt color in the skeleton .bashrc before creating the default NB_USER
-# hadolint ignore=SC2016
-RUN sed -i 's/^#force_color_prompt=yes/force_color_prompt=yes/' /etc/skel/.bashrc
-
-# Create NB_USER with name jovyan user with UID=1000 and in the 'users' group
-# and make sure these dirs are writable by the `users` group.
-RUN echo "auth requisite pam_deny.so" >> /etc/pam.d/su && \
-    useradd -l -m -s /bin/bash -N -u "${NB_UID}" "${NB_USER}" && \
-    chmod g+w /etc/passwd && \
-    fix-permissions "${HOME}"
+# Install some packages into base, create GPU enabled tensorflow conda
+# environment, and clean
+ARG ENVIRONMENT_FILE=environment-tf.yml
+ADD $ENVIRONMENT_FILE /tmp/environment.yml
+RUN mamba install --quiet --yes \
+      'conda-forge::nb_conda_kernels' \
+      'conda-forge::jupyterlab-git' \
+      'conda-forge::ipywidgets' && \
+    mamba env update -f /tmp/environment.yml && \
+    pip install --no-cache-dir nbgitpuller && \
+    mamba clean --all -f -y && \
+    jupyter lab clean -y && \
+    npm cache clean --force && \
+    rm -rf /home/$NB_USER/.cache/yarn && \
+    rm -rf /home/$NB_USER/.node-gyp && \
+    fix-permissions $CONDA_DIR && \
+    fix-permissions /home/$NB_USER
 
 USER ${NB_UID}
-
-WORKDIR "${HOME}"
