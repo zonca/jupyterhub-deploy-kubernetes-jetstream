@@ -1,0 +1,20 @@
+singleuser:
+   serviceAccountName: default
+   networkPolicy:
+     enabled: True
+     ingress: []
+     egress:
+       - ports:
+           - port: 443
+             protocol: TCP
+         to:
+           - namespaceSelector:
+              matchLabels:
+                name: kube-system
+     egressAllowRules:
+       cloudMetadataServer: false
+       dnsPortsCloudMetadataServer: true
+       dnsPortsKubeSystemNamespace: true
+       dnsPortsPrivateIPs: true
+       nonPrivateIPs: true
+       privateIPs: true
