@@ -3,7 +3,12 @@ kubespray
 cluster_api
 k8s_tunnel.sh
 *secrets/
-*secrets.yaml
+*secrets*.yaml
 .ipynb_checkpoints
 *.swp
 obsolete
+zonca.dev
+
+2i2c/
+backup_volumes/RESTIC_REPOSITORY
+jetstream_kubespray/
