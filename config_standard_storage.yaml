@@ -9,10 +9,8 @@ hub:
 singleuser:
   defaultUrl: "/lab"
   image:
-    name: "jupyter/scipy-notebook"
-    tag: "2023-10-02"
-  extraEnv:
-    JUPYTERHUB_SINGLEUSER_APP: "jupyter_server.serverapp.ServerApp"
+    name: "quay.io/jupyter/scipy-notebook"
+    tag: "2025-11-10"
   # very small limits for testing on small instances
   memory:
     guarantee: 1G
