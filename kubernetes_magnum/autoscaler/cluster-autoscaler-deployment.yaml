@@ -26,9 +26,9 @@ spec:
             - ./cluster-autoscaler
             - --alsologtostderr
             - --cluster-name=scaler-01
-            - --cloud-config=/config/cloud-config
+            - --cloud-config=/config/cloud.conf
             - --cloud-provider=magnum
-            - --nodes=1:10:DefaultNodeGroup
+            - --nodes=1:6:DefaultNodeGroup
           volumeMounts:
             - name: cloud-config
               mountPath: /config

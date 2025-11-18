@@ -18,7 +18,7 @@ spec:
         app: cluster-autoscaler
     spec:
       nodeSelector:
-        node-role.kubernetes.io/master: ""
+        node-role.kubernetes.io/control-plane: ""
       securityContext:
         runAsUser: 1001
       tolerations:
@@ -27,6 +27,9 @@ spec:
           effect: NoSchedule
         - key: dedicated
           value: "master"
+          effect: NoSchedule
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
           effect: NoSchedule
       serviceAccountName: cluster-autoscaler-account
       containers:
@@ -37,11 +40,11 @@ spec:
             - ./cluster-autoscaler
             - --alsologtostderr
             - --cluster-name=k8s
-            - --cloud-config=/config/cloud-config
+            - --cloud-config=/config/cloud.conf
             - --cloud-provider=magnum
             - --scale-down-delay-after-add=1m
             - --scale-down-unneeded-time=1m
-            - --nodes=1:5:DefaultNodeGroup
+            - --nodes=1:6:DefaultNodeGroup
           volumeMounts:
             - name: cloud-config
               mountPath: /config
