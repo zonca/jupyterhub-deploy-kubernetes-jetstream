@@ -1,0 +1,1 @@
+openstack image create --disk-format raw --container-format bare --property visibility=community --property hw_disk_bus=scsi --property hw_scsi_model=virtio-scsi --property hw_qemu_guest_agent=yes --property os_require_quiesce=yes --file /tmp/Ubuntu2204MinimalGenKernel.raw --progress Ubuntu2204MinimalGenKernelImg
