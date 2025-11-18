@@ -1,0 +1,34 @@
+singleuser:
+  extraFiles:
+    ensure-serverproxy:
+      mountPath: /usr/local/bin/before-notebook.d/50-install-server-proxy.sh
+      mode: 493
+      stringData: |
+        #!/bin/bash
+        set -euo pipefail
+        python -m pip install --no-cache-dir 'jupyter-server-proxy<4'
+    # Allow proxy requests to the Dask Scheduler’s dashboard
+    jupyter-server-config:
+      mountPath: /etc/jupyter/jupyter_server_config.py
+      stringData: |
+        c.ServerApp.jpserver_extensions = {
+            "jupyter_server_proxy": True,
+        }
+        c.ServerProxy.host_allowlist = lambda app, host: True
+        c.ServerProxy.servers = {
+            "dask-dashboard": {
+                "command": [],                     # empty command means use existing service
+                "port": 8787,                      # the Dask scheduler dashboard port
+                "absolute_url": False,
+                "host": "my-dask-cluster-scheduler.jhub.svc.cluster.local",
+            }
+        }
+
+
+    # Configure the default path to reach Dask Scheduler’s dashboard
+    dask-dashboard-config:
+      mountPath: /home/jovyan/.config/dask/distributed.yaml
+      stringData: |
+        distributed:
+          dashboard:
+            link: "/user/{JUPYTERHUB_USER}/proxy/dask-dashboard/status"
