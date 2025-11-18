@@ -1,4 +1,5 @@
 magnum
+config
 .s3cfg
 autoscaler/new
 
