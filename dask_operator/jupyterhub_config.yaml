@@ -1,5 +1,5 @@
 singleuser:
-   serviceAccountName: default
+   serviceAccountName: dask-sa
    networkPolicy:
      enabled: True
      ingress: []
