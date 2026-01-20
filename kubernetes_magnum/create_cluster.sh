@@ -2,7 +2,7 @@
 
 # We can override the default values of the template
 FLAVOR="m3.small"
-TEMPLATE="kubernetes-1-33-jammy"
+TEMPLATE="kubernetes-1-31-jammy"
 AUTOSCALING=true
 MASTER_FLAVOR=$FLAVOR
 DOCKER_VOLUME_SIZE_GB=10
