@@ -8,7 +8,7 @@ MASTER_FLAVOR=$FLAVOR
 DOCKER_VOLUME_SIZE_GB=10
 
 # Number of instances
-N_MASTER=3 # Needs to be odd
+N_MASTER=1 # Needs to be odd
 N_NODES=1
 
 # Start timing
