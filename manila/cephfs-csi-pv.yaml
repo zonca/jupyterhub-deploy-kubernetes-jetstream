@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: manila-cephfs-pv
+spec:
+  capacity:
+    storage: 50Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  volumeMode: Filesystem
+  csi:
+    driver: cephfs.csi.ceph.com
+    volumeHandle: manila-cephfs-pv
+    nodeStageSecretRef:
+      name: csi-cephfs-secret
+      namespace: default
+    volumeAttributes:
+      clusterID: "<CEPH_FSID>"
+      staticVolume: "true"
+      rootPath: "<SHARE_PATH>"
+      # fsName: "<FS_NAME>"  # Optional: set if your CephFS filesystem is not the default

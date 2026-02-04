@@ -1,0 +1,21 @@
+# Values for the ceph-csi/ceph-csi-cephfs Helm chart.
+# Replace placeholders with values from your Manila share and Jetstream support.
+
+csiConfig:
+  - clusterID: "<CEPH_FSID>"
+    monitors:
+      - "149.165.158.38:6789"
+      - "149.165.158.22:6789"
+      - "149.165.158.54:6789"
+      - "149.165.158.70:6789"
+      - "149.165.158.86:6789"
+
+secret:
+  create: true
+  name: csi-cephfs-secret
+  # The userID must not include the "client." prefix.
+  userID: "<ACCESS_RULE_NAME>"
+  userKey: "<ACCESS_KEY>"
+
+storageClass:
+  create: false

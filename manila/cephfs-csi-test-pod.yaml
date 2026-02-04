@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cephfs-csi-test
+  namespace: jhub
+spec:
+  containers:
+  - name: cephfs-csi-test
+    image: busybox:1.36
+    command: ["/bin/sh", "-c", "sleep 3600"]
+    volumeMounts:
+    - name: manila-cephfs
+      mountPath: /mnt/cephfs
+  volumes:
+  - name: manila-cephfs
+    persistentVolumeClaim:
+      claimName: manila-cephfs

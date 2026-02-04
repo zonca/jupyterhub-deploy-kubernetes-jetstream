@@ -1,22 +1,10 @@
 singleuser:
   storage:
     extraVolumes:
-        # Manila CephFS share mounted into every user pod.
+        # Manila CephFS share mounted via CSI-backed PVC
         - name: manila-share
-          cephfs:
-            monitors:
-            - 149.165.xxx.xx:xxxx
-            - 149.165.xxx.xx:xxxx
-            - 149.165.xxx.xx:xxxx
-            - 149.165.xxx.xx:xxxx
-            - 149.165.xxx.xx:xxxx
-            # From Exosphere "Access rule name"
-            user: zonca-manila-share
-            secretRef:
-              name: ceph-secret
-            readOnly: false
-            # From Exosphere "Share path"
-            path: "/volumes/_nogroup/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+          persistentVolumeClaim:
+            claimName: manila-cephfs
     extraVolumeMounts:
         - name: manila-share
           mountPath: /share
