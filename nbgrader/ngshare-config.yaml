@@ -1,0 +1,6 @@
+ngshare:
+  hub_api_token: REPLACE_WITH_A_LONG_RANDOM_TOKEN
+  admins:
+    - admin_username
+  # If ngshare is not in the same namespace as JupyterHub, set this:
+  # hub_api_url: http://hub.YOUR_JHUB_NAMESPACE.svc.cluster.local:8081/hub/api
