@@ -19,8 +19,10 @@ spec:
       - 149.165.xxx.xx:xxxx
       - 149.165.xxx.xx:xxxx
       - 149.165.xxx.xx:xxxx
+      # From Exosphere "Access rule name"
       user: zonca-manila-share
       secretRef:
         name: ceph-secret
       readOnly: false
+      # From Exosphere "Share path"
       path: "/volumes/_nogroup/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
