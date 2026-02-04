@@ -1,0 +1,9 @@
+hub:
+  extraConfig:
+    00-ngshare-service: |
+      c.JupyterHub.services.append({
+          "name": "ngshare",
+          "api_token": "REPLACE_WITH_THE_SAME_TOKEN",
+          "url": "http://ngshare.jhub.svc.cluster.local:8080",
+          "oauth_no_confirm": True
+      })

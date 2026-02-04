@@ -1,0 +1,19 @@
+singleuser:
+  image:
+    name: quay.io/jupyter/scipy-notebook
+    tag: "2025-11-10"
+  lifecycleHooks:
+    postStart:
+      exec:
+        command:
+          - sh
+          - -c
+          - |
+            pip install --no-cache-dir nbgrader ngshare-exchange && \
+            mkdir -p /etc/jupyter && \
+            cat > /etc/jupyter/nbgrader_config.py <<'CFG'
+            from ngshare_exchange import configureExchange
+            c = get_config()
+            configureExchange(c, 'http://ngshare.jhub.svc.cluster.local:8080/services/ngshare')
+            c.CourseDirectory.course_id = 'COURSE_ID'
+            CFG
