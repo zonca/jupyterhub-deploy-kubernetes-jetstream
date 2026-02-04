@@ -1,3 +1,5 @@
+debug:
+    enabled: true
 hub:
   db:
     type: sqlite-pvc
@@ -9,8 +11,8 @@ hub:
 singleuser:
   defaultUrl: "/lab"
   image:
-    name: "quay.io/jupyter/scipy-notebook"
-    tag: "2025-11-10"
+    name: "ghcr.io/zonca/jupyterhub-dask-docker-image"
+    tag: "20251118-d10d248"
   # very small limits for testing on small instances
   memory:
     guarantee: 1G
