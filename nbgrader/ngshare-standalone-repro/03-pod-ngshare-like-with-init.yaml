@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ngshare-standalone-with-init
+  namespace: jhub
+spec:
+  restartPolicy: Never
+  securityContext:
+    fsGroup: 1000
+    runAsNonRoot: true
+  initContainers:
+    - name: fix-permissions
+      image: busybox:1.36
+      securityContext:
+        runAsUser: 0
+        runAsNonRoot: false
+      command:
+        - sh
+        - -c
+        - |
+          set -eux
+          chown -R 65535:1000 /srv/ngshare
+          chmod -R 0770 /srv/ngshare
+      volumeMounts:
+        - name: data
+          mountPath: /srv/ngshare
+  containers:
+    - name: repro
+      image: libretexts/ngshare:v0.6.0
+      securityContext:
+        runAsUser: 65535
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: true
+        capabilities:
+          drop:
+            - ALL
+      command:
+        - sh
+        - -c
+        - |
+          set -eux
+          id
+          ls -ld /srv/ngshare
+          python3 -c "import sqlite3; db='/srv/ngshare/repro.sqlite'; conn=sqlite3.connect(db); conn.execute('create table t(x int)'); conn.commit(); conn.close(); print('sqlite ok')"
+          ls -l /srv/ngshare
+          sleep 3600
+      volumeMounts:
+        - name: data
+          mountPath: /srv/ngshare
+  volumes:
+    - name: data
+      persistentVolumeClaim:
+        claimName: ngshare-standalone-pvc
