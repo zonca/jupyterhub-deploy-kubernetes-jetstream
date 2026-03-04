@@ -1,0 +1,16 @@
+singleuser:
+  lifecycleHooks:
+    postStart:
+      exec:
+        command:
+          - sh
+          - -c
+          - |
+            python -m pip install --no-cache-dir nbgrader && \
+            mkdir -p /home/jovyan/.jupyter && \
+            cat > /home/jovyan/.jupyter/nbgrader_config.py <<'CFG'
+            c = get_config()
+            c.CourseDirectory.course_id = 'COURSE_ID'
+            c.Exchange.root = '/share/nbgrader/exchange'
+            c.Exchange.path_includes_course = True
+            CFG

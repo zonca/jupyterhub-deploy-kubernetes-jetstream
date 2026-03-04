@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: manila-exchange-permissions
+  namespace: jhub
+spec:
+  restartPolicy: Never
+  containers:
+    - name: fix-permissions
+      image: alpine:3.20
+      command:
+        - sh
+        - -c
+        - |
+          mkdir -p /mnt/share/nbgrader/exchange && \
+          chmod -R 0777 /mnt/share && \
+          ls -ld /mnt/share /mnt/share/nbgrader /mnt/share/nbgrader/exchange
+      volumeMounts:
+        - name: manila-share
+          mountPath: /mnt/share
+  volumes:
+    - name: manila-share
+      persistentVolumeClaim:
+        claimName: manila-cephfs
