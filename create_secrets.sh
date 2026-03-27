@@ -10,12 +10,13 @@ proxy:
 ingress:
   enabled: true
   annotations:
-    kubernetes.io/ingress.class: "nginx"
-    cert-manager.io/cluster-issuer: "letsencrypt"
+    kubernetes.io/ingress.class: \"traefik\"
+    cert-manager.io/cluster-issuer: \"letsencrypt\"
+    traefik.ingress.kubernetes.io/middlewares.limit.buffering.maxRequestBodyBytes: \"500000000\"
   hosts:
-        - k8s.$PROJ.projects.jetstream-cloud.org
+        - $SUBDOMAIN.$PROJ.projects.jetstream-cloud.org
   tls:
         - hosts:
-           - k8s.$PROJ.projects.jetstream-cloud.org 
+           - $SUBDOMAIN.$PROJ.projects.jetstream-cloud.org
           secretName: certmanager-tls-jupyterhub
 " > secrets.yaml
