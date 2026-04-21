@@ -12,6 +12,20 @@ After that you can interact with the deployment using `kubectl`, `helm`, and `op
 
 If you need help with Jetstream issues, contact `help@jetstream-cloud.org`. To create a support ticket, I'll first show you the draft text locally, then create it in Gmail (work account) using smithery for you to review before sending.
 
+## Useful contacts
+
+- Julien Chastang: chastang@ucar.edu
+- Ana Espinoza: respinoza@ucar.edu
+
+## Email
+
+When working with email, always use the `gog` CLI with account `andrea@andreazonca.com`.
+
+Search emails:
+```bash
+gog gmail search "jetstream" --account andrea@andreazonca.com
+```
+
 ## Repo layout note
 
 Tutorials live under `zonca.dev/posts`, while Kubernetes/JupyterHub configuration files live in this repo (e.g. `nfs/`, `nbgrader/`, `config_*.yaml`). Keep that separation in mind when editing or referencing "this repo".
