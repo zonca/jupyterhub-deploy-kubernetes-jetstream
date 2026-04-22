@@ -28,3 +28,4 @@ zonca.dev
 2i2c/
 backup_volumes/RESTIC_REPOSITORY
 jetstream_kubespray/
+tfplan
