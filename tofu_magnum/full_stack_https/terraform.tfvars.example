@@ -1,0 +1,21 @@
+# Copy to terraform.tfvars and adjust values
+
+cluster_name        = "k8s"
+cluster_template_id = "ff32fc8d-23de-417f-b6cc-5f03f2aa6628"
+ssh_public_key      = "nebula"
+project_id          = "cis230085"
+subdomain           = "k8s"
+letsencrypt_email   = "you@example.org"
+
+# Optional tuning
+master_count                = 1
+master_flavor               = "m3.small"
+node_count                  = 2
+worker_flavor               = "m3.small"
+docker_volume_size          = 20
+enable_autoscaling          = true
+autoscaling_min_node_count  = 1
+autoscaling_max_node_count  = 5
+
+# Optional override if zone discovery by project_id is not correct
+# dns_zone_name = "cis230085.projects.jetstream-cloud.org."
