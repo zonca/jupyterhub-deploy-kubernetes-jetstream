@@ -29,3 +29,4 @@ zonca.dev
 backup_volumes/RESTIC_REPOSITORY
 jetstream_kubespray/
 tfplan
+.terraform.tfstate.lock.info
