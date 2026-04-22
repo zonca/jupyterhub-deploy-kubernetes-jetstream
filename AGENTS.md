@@ -26,6 +26,20 @@ Search emails:
 gog gmail search "jetstream" --account andrea@andreazonca.com
 ```
 
+## Trello
+
+Always use the **XSEDE** board for tracking tickets and work items.
+
+List boards:
+```bash
+curl -s "https://api.trello.com/1/members/me/boards?key=$TRELLO_API_KEY&token=$TRELLO_TOKEN" | jq '.[] | {name, id}'
+```
+
+Search for a card (e.g., ATS-26466):
+```bash
+curl -s "https://api.trello.com/1/boards/57b4d1c4c484b2620ef4df73/cards?key=$TRELLO_API_KEY&token=$TRELLO_TOKEN" | jq '.[] | select(.name | contains("ATS-26466"))'
+```
+
 ## Repo layout note
 
 Tutorials live under `zonca.dev/posts`, while Kubernetes/JupyterHub configuration files live in this repo (e.g. `nfs/`, `nbgrader/`, `config_*.yaml`). Keep that separation in mind when editing or referencing "this repo".
