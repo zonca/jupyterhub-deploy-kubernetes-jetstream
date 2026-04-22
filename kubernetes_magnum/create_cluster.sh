@@ -2,10 +2,12 @@
 
 # We can override the default values of the template
 FLAVOR="m3.small"
-TEMPLATE="kubernetes-1-33-jammy"
+TEMPLATE="${TEMPLATE:-kubernetes-1-33-jammy}"
 AUTOSCALING=true
 MASTER_FLAVOR=$FLAVOR
 DOCKER_VOLUME_SIZE_GB=10
+K8S_CLUSTER_NAME="${K8S_CLUSTER_NAME:-k8s}"
+OPENSTACK_BIN="${OPENSTACK_BIN:-openstack}"
 
 # Number of instances
 N_MASTER=1 # Needs to be odd
@@ -17,12 +19,13 @@ START=$(date +%s)
 
 
 # Create the cluster
-openstack coe cluster create --cluster-template $TEMPLATE \
+$OPENSTACK_BIN coe cluster create --cluster-template $TEMPLATE \
     --master-count $N_MASTER --node-count $N_NODES \
     --master-flavor $MASTER_FLAVOR --flavor $FLAVOR \
     --labels auto_scaling_enabled=$AUTOSCALING \
     --labels min_node_count=1 \
     --labels max_node_count=5 \
+    $EXTRA_LABELS \
     --fixed-network auto_allocated_network \
     --docker-volume-size $DOCKER_VOLUME_SIZE_GB \
     $K8S_CLUSTER_NAME
@@ -30,7 +33,7 @@ openstack coe cluster create --cluster-template $TEMPLATE \
 # Poll the cluster status
 echo "Waiting for the cluster to become ready..."
 while true; do
-    STATUS=$(openstack coe cluster show $K8S_CLUSTER_NAME -f value -c status)
+    STATUS=$($OPENSTACK_BIN coe cluster show $K8S_CLUSTER_NAME -f value -c status)
     CURRENT=$(date +%s)
     ELAPSED=$((CURRENT - START))
     ELAPSED_MINUTES=$((ELAPSED / 60))
