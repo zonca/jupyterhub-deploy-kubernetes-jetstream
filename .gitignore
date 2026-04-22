@@ -1,9 +1,25 @@
+# Tofu/Terraform
+.terraform/
+*.tfvars
+*.tfvars.json
+terraform.tfstate*
+*.tfplan
+
+# Credentials and sensitive files
 *openrc*
+.env
+*kubeconfig*
+config
+*.log
+*secrets/
+*secrets*.yaml
+rendered-*.yaml
+rendered-*.yml
+
+# Others
 kubespray
 cluster_api
 k8s_tunnel.sh
-*secrets/
-*secrets*.yaml
 .ipynb_checkpoints
 *.swp
 obsolete
