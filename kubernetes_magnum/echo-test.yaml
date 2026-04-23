@@ -17,7 +17,7 @@ spec:
         # Using hashicorp/http-echo image, which listens on port 5678
         image: hashicorp/http-echo:latest
         args:
-          - "-text=Testing NGINX Ingress on Jetstream!" # Text the server will respond with
+          - "-text=Testing Traefik Ingress on Jetstream!" # Text the server will respond with
         ports:
         - containerPort: 5678 # Port the echo server listens on
 
@@ -43,9 +43,9 @@ kind: Ingress
 metadata:
   name: echo-ingress
 spec:
-  ingressClassName: nginx
+  ingressClassName: traefik
   rules:
-  - host: "testpage.cis230085.projects.jetstream-cloud.org"
+  - host: "testpage.$PROJ.projects.jetstream-cloud.org"
     http:
       paths:
       - path: /
