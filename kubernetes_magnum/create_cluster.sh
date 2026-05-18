@@ -4,6 +4,7 @@
 FLAVOR="m3.small"
 TEMPLATE="${TEMPLATE:-kubernetes-1-33-jammy-fixed-labels}"
 AUTOSCALING=true
+MAX_NODE_COUNT="${MAX_NODE_COUNT:-5}"
 MASTER_FLAVOR=$FLAVOR
 DOCKER_VOLUME_SIZE_GB=10
 K8S_CLUSTER_NAME="${K8S_CLUSTER_NAME:-k8s}"
@@ -24,7 +25,7 @@ $OPENSTACK_BIN coe cluster create --cluster-template $TEMPLATE \
     --master-flavor $MASTER_FLAVOR --flavor $FLAVOR \
     --labels auto_scaling_enabled=$AUTOSCALING \
     --labels min_node_count=1 \
-    --labels max_node_count=5 \
+    --labels max_node_count=$MAX_NODE_COUNT \
     $EXTRA_LABELS \
     --fixed-network auto_allocated_network \
     --docker-volume-size $DOCKER_VOLUME_SIZE_GB \
