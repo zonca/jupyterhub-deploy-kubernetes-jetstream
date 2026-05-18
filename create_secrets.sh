@@ -9,8 +9,8 @@ proxy:
 
 ingress:
   enabled: true
+  ingressClassName: traefik
   annotations:
-    kubernetes.io/ingress.class: "nginx"
     cert-manager.io/cluster-issuer: "letsencrypt"
   hosts:
         - k8s.$PROJ.projects.jetstream-cloud.org
