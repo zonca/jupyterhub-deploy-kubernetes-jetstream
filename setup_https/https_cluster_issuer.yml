@@ -12,8 +12,8 @@ spec:
     privateKeySecretRef:
       # Secret resource that will be used to store the account's private key.
       name: cluster-issuer-account-key
-    # Add a single challenge solver, HTTP01 using nginx
+    # Add a single challenge solver, HTTP01 using traefik
     solvers:
     - http01:
         ingress:
-          class: nginx
+          class: traefik

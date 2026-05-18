@@ -6,20 +6,19 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: echo-app # Label selector for pods
+      app: echo-app
   template:
     metadata:
       labels:
-        app: echo-app # Label applied to pods
+        app: echo-app
     spec:
       containers:
       - name: echo-container
-        # Using hashicorp/http-echo image, which listens on port 5678
         image: hashicorp/http-echo:latest
         args:
-          - "-text=Testing NGINX Ingress on Jetstream!" # Text the server will respond with
+          - "-text=Testing Traefik Ingress on Jetstream!"
         ports:
-        - containerPort: 5678 # Port the echo server listens on
+        - containerPort: 5678
 
 ---
 
@@ -29,11 +28,11 @@ metadata:
   name: echo-service
 spec:
   selector:
-    app: echo-app # Selects pods from the echo-deployment
+    app: echo-app
   ports:
   - protocol: TCP
-    port: 80        # Service listens on standard HTTP port 80
-    targetPort: 5678  # Forward traffic to the container's port 5678
+    port: 80
+    targetPort: 5678
   type: ClusterIP
 
 ---
@@ -43,7 +42,7 @@ kind: Ingress
 metadata:
   name: echo-ingress
 spec:
-  ingressClassName: nginx
+  ingressClassName: traefik
   rules:
   - host: "testpage.cis230085.projects.jetstream-cloud.org"
     http:
@@ -52,6 +51,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: echo-service # Target the echo-service
+            name: echo-service
             port:
-              number: 80       # Target the service's port 80
+              number: 80
