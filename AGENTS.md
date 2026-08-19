@@ -30,6 +30,13 @@ gog gmail search "jetstream" --account andrea@andreazonca.com
 
 Always use the **XSEDE** board for tracking tickets and work items.
 
+**Always update Trello.** Whenever a ticket, investigation, test, or work
+item makes progress or reaches an outcome, update the corresponding Trello
+card (append an update section to its description) before moving on. Create
+a card if one does not yet exist. Do this for email threads, support
+tickets, reproductions, blog posts, and docs PRs that originate from this
+project.
+
 List boards:
 ```bash
 curl -s "https://api.trello.com/1/members/me/boards?key=$TRELLO_API_KEY&token=$TRELLO_TOKEN" | jq '.[] | {name, id}'
