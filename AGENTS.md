@@ -2,7 +2,7 @@
 
 To work on this project you need access to the OpenStack API.
 
-1) Source your `*openrc*.sh` file to load OpenStack credentials.
+1) Source the app credential file at repo root (`app-cred-*-openrc.sh`, gitignored) to load OpenStack credentials.
 2) Activate the Python environment: `.venv/bin/activate`.
 3) If the cluster was created with Magnum, see `kubernetes_magnum/configure_kubectl_locally.sh`.
 
