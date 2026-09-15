@@ -69,7 +69,7 @@ resource "null_resource" "install_traefik" {
   }
 
   provisioner "local-exec" {
-    interpreter = ["/bin/bash", "-lc"]
+    interpreter = ["/bin/bash", "-c"]
     command     = <<-EOT
       set -euo pipefail
       export KUBECONFIG="${module.kubernetes_cluster.kubeconfig_path}"
@@ -98,7 +98,7 @@ resource "null_resource" "bind_fixed_ip_to_traefik_lb" {
   }
 
   provisioner "local-exec" {
-    interpreter = ["/bin/bash", "-lc"]
+    interpreter = ["/bin/bash", "-c"]
     command     = <<-EOT
       set -euo pipefail
       export KUBECONFIG="${module.kubernetes_cluster.kubeconfig_path}"
@@ -152,7 +152,7 @@ resource "null_resource" "install_cert_manager" {
   }
 
   provisioner "local-exec" {
-    interpreter = ["/bin/bash", "-lc"]
+    interpreter = ["/bin/bash", "-c"]
     command     = <<-EOT
       set -euo pipefail
       export KUBECONFIG="${module.kubernetes_cluster.kubeconfig_path}"
@@ -173,7 +173,7 @@ resource "null_resource" "pin_certmanager_to_control_plane" {
   }
 
   provisioner "local-exec" {
-    interpreter = ["/bin/bash", "-lc"]
+    interpreter = ["/bin/bash", "-c"]
     command     = <<-EOT
       set -euo pipefail
       export KUBECONFIG="${module.kubernetes_cluster.kubeconfig_path}"
@@ -194,7 +194,7 @@ resource "null_resource" "install_cluster_issuer" {
   }
 
   provisioner "local-exec" {
-    interpreter = ["/bin/bash", "-lc"]
+    interpreter = ["/bin/bash", "-c"]
     command     = <<-EOT
       set -euo pipefail
       export KUBECONFIG="${module.kubernetes_cluster.kubeconfig_path}"
@@ -218,7 +218,7 @@ resource "null_resource" "install_jupyterhub" {
   }
 
   provisioner "local-exec" {
-    interpreter = ["/bin/bash", "-lc"]
+    interpreter = ["/bin/bash", "-c"]
     command     = <<-EOT
       set -euo pipefail
       export KUBECONFIG="${module.kubernetes_cluster.kubeconfig_path}"
