@@ -21,14 +21,19 @@ source .venv/bin/activate
 ```
 
 1. Create a Manila share (e.g. 10 GiB, `cephfsnativetype`, CEPHFS), get its
-   export location and add a `cephx` RW access rule.
+   export location and add a `cephx` RW access rule. Use a **separate share**
+   (or a subdirectory of one you control): never point this repro at the same
+   path as a deployed ngshare volume, because the `with-init` variant below
+   recursively `chown`s the mount.
 2. Fill placeholders in `01-pv.yaml`:
    - `<SHARE_ID>`: the Manila share UUID (any unique string is fine as `volumeHandle`)
    - `<SHARE_PATH>`: the path part of the export location (e.g. `/volumes/_nogroup/<share-id>/<path>`)
    - `clusterID`: must match `csiConfig[].clusterID` in the ceph-csi Helm values
-3. Install CephFS CSI (see `../../manila/cephfs-csi-values.yaml`) and make sure
-   the secret `csi-cephfs-secret` is in `kube-system` (or adjust
-   `nodeStageSecretRef` in `01-pv.yaml`).
+3. Install CephFS CSI: copy `../../manila/cephfs-csi-values.yaml` to
+   `../../manila/cephfs-csi-values.local.yaml` (gitignored, it holds the share
+   access key), fill it, and install from the repo root. Make sure the secret
+   `csi-cephfs-secret` is in `kube-system` (or adjust `nodeStageSecretRef` in
+   `01-pv.yaml`).
 
 ## Run
 
