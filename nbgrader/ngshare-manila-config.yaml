@@ -4,7 +4,7 @@
 # fsGroupPolicy=ReadWriteOnceWithFSType and does NOT apply fsGroup to
 # ReadWriteMany volumes), use a static Manila CephFS PV/PVC:
 #   - Storage class: manila-cephfs (see ngshare-standalone-repro-manila/00-storageclass.yaml)
-#   - PV: created from ngshare-standalone-repro-manila/01-pv.yaml template
+#   - PV: created from nbgrader/ngshare-manila-pv.yaml template
 #   - Binding: via pvc.selector below
 # With CephFS CSI (fsGroupPolicy=File), fsGroup is honored on RWX volumes,
 # so NO initContainer is needed.

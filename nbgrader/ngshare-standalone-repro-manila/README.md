@@ -55,7 +55,9 @@ kubectl -n jhub logs ngshare-manila-with-init --tail=200
 ## Deployment of ngshare with the Manila volume
 
 Use `../ngshare-manila-config.yaml` as Helm values; the chart creates a PVC
-that selects the same static PV. No initContainer is required.
+that selects the static PV created from `../ngshare-manila-pv.yaml` (labels
+`app: ngshare-manila`, distinct from this repro's PV). No initContainer is
+required.
 
 ## Cleanup
 
@@ -63,7 +65,7 @@ that selects the same static PV. No initContainer is required.
 kubectl -n jhub delete pod ngshare-manila-no-init --ignore-not-found
 kubectl -n jhub delete pod ngshare-manila-with-init --ignore-not-found
 kubectl -n jhub delete pvc ngshare-manila-repro-pvc --ignore-not-found
-kubectl delete pv ngshare-manila-pv --ignore-not-found
+kubectl delete pv ngshare-repro-pv --ignore-not-found
 kubectl delete sc manila-cephfs --ignore-not-found
 ```
 
