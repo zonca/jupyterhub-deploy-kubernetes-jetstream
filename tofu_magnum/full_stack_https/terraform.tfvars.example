@@ -1,7 +1,8 @@
 # Copy to terraform.tfvars and adjust values
 
 cluster_name        = "k8s"
-cluster_template_id = "ff32fc8d-23de-417f-b6cc-5f03f2aa6628"
+# kubernetes-1-33-jammy-fixed-labels
+cluster_template_id = "ce4a54dd-7d3d-486c-ab61-71d7a02b3076"
 ssh_public_key      = "nebula"
 project_id          = "cis230085"
 subdomain           = "k8s"

@@ -60,12 +60,12 @@ resource "local_file" "cluster_issuer" {
   content  = local.issuer_yml
 }
 
-resource "null_resource" "install_ingress" {
+resource "null_resource" "install_traefik" {
   depends_on = [module.kubernetes_cluster]
 
   triggers = {
     cluster_id    = module.kubernetes_cluster.cluster_id
-    ingress_chart = "ingress-nginx"
+    traefik_chart = var.traefik_chart_version
   }
 
   provisioner "local-exec" {
@@ -73,25 +73,27 @@ resource "null_resource" "install_ingress" {
     command     = <<-EOT
       set -euo pipefail
       export KUBECONFIG="${module.kubernetes_cluster.kubeconfig_path}"
-      /usr/local/bin/helm upgrade --install ${var.ingress_release_name} ingress-nginx \
-        --repo https://kubernetes.github.io/ingress-nginx \
-        --namespace ${var.ingress_namespace} --create-namespace
+      helm repo add traefik https://traefik.github.io/charts
+      helm repo update
+      helm upgrade --install ${var.traefik_release_name} traefik/traefik \
+        --version ${var.traefik_chart_version} \
+        --namespace ${var.traefik_namespace} --create-namespace
     EOT
   }
 }
 
-resource "time_sleep" "wait_for_ingress_lb" {
-  depends_on      = [null_resource.install_ingress]
+resource "time_sleep" "wait_for_traefik_lb" {
+  depends_on      = [null_resource.install_traefik]
   create_duration = "60s"
 }
 
-resource "null_resource" "bind_fixed_ip_to_ingress_lb" {
-  depends_on = [time_sleep.wait_for_ingress_lb, openstack_networking_floatingip_v2.ingress_fixed_ip]
+resource "null_resource" "bind_fixed_ip_to_traefik_lb" {
+  depends_on = [time_sleep.wait_for_traefik_lb, openstack_networking_floatingip_v2.ingress_fixed_ip]
 
   triggers = {
     fixed_ip        = openstack_networking_floatingip_v2.ingress_fixed_ip.address
-    ingress_release = var.ingress_release_name
-    ingress_ns      = var.ingress_namespace
+    traefik_release = var.traefik_release_name
+    traefik_ns      = var.traefik_namespace
     cluster_id      = module.kubernetes_cluster.cluster_id
   }
 
@@ -103,7 +105,7 @@ resource "null_resource" "bind_fixed_ip_to_ingress_lb" {
 
       INGRESS_IP=""
       for _ in $(seq 1 30); do
-        INGRESS_IP=$(/home/zonca/zonca/p/software/jupyterhub-deploy-kubernetes-jetstream/.venv/bin/kubectl get svc -n ${var.ingress_namespace} ${var.ingress_release_name}-controller -o jsonpath='{.status.loadBalancer.ingress[0].ip}' || true)
+        INGRESS_IP=$(kubectl get svc -n ${var.traefik_namespace} ${var.traefik_release_name} -o jsonpath='{.status.loadBalancer.ingress[0].ip}' || true)
         if [ -n "$INGRESS_IP" ]; then
           break
         fi
@@ -111,59 +113,42 @@ resource "null_resource" "bind_fixed_ip_to_ingress_lb" {
       done
 
       if [ -z "$INGRESS_IP" ]; then
-        echo "ingress-nginx external IP was not assigned" >&2
+        echo "traefik external IP was not assigned" >&2
         exit 1
       fi
 
-      VIP_PORT_ID=$(/home/zonca/zonca/p/software/jupyterhub-deploy-kubernetes-jetstream/.venv/bin/openstack floating ip list --floating-ip-address "$INGRESS_IP" -f value -c Port)
+      VIP_PORT_ID=$(openstack floating ip list --floating-ip-address "$INGRESS_IP" -f value -c Port)
       if [ -z "$VIP_PORT_ID" ]; then
-        echo "could not find VIP port for ingress external IP: $INGRESS_IP" >&2
+        echo "could not find VIP port for traefik external IP: $INGRESS_IP" >&2
         exit 1
       fi
 
-      EXISTING_FIP_ID=$(/home/zonca/zonca/p/software/jupyterhub-deploy-kubernetes-jetstream/.venv/bin/openstack floating ip list --port "$VIP_PORT_ID" -f value -c ID | head -n1 || true)
+      EXISTING_FIP_ID=$(openstack floating ip list --port "$VIP_PORT_ID" -f value -c ID | head -n1 || true)
       if [ -n "$EXISTING_FIP_ID" ]; then
-        /home/zonca/zonca/p/software/jupyterhub-deploy-kubernetes-jetstream/.venv/bin/openstack floating ip unset --port "$EXISTING_FIP_ID"
+        openstack floating ip unset --port "$EXISTING_FIP_ID"
       fi
 
-      /home/zonca/zonca/p/software/jupyterhub-deploy-kubernetes-jetstream/.venv/bin/openstack floating ip set --port "$VIP_PORT_ID" "${openstack_networking_floatingip_v2.ingress_fixed_ip.address}"
+      openstack floating ip set --port "$VIP_PORT_ID" "${openstack_networking_floatingip_v2.ingress_fixed_ip.address}"
     EOT
   }
 }
 
-resource "null_resource" "manage_jhub_dns_record" {
-  depends_on = [null_resource.bind_fixed_ip_to_ingress_lb]
+resource "openstack_dns_recordset_v2" "jhub_record" {
+  depends_on = [null_resource.bind_fixed_ip_to_traefik_lb]
 
-  triggers = {
-    ip    = openstack_networking_floatingip_v2.ingress_fixed_ip.address
-    fqdn  = local.fqdn
-    zone  = data.openstack_dns_zone_v2.project_zone.id
-  }
-
-  provisioner "local-exec" {
-    interpreter = ["/bin/bash", "-lc"]
-    command     = <<-EOT
-      set -euo pipefail
-      
-      RECORD_ID=$(/home/zonca/zonca/p/software/jupyterhub-deploy-kubernetes-jetstream/.venv/bin/openstack recordset list ${data.openstack_dns_zone_v2.project_zone.id} -f json | jq -r ".[] | select(.name == \"${local.fqdn}.\") | .id")
-      
-      if [ -n "$RECORD_ID" ]; then
-        echo "Updating existing DNS record: $RECORD_ID"
-        /home/zonca/zonca/p/software/jupyterhub-deploy-kubernetes-jetstream/.venv/bin/openstack recordset set --record "${openstack_networking_floatingip_v2.ingress_fixed_ip.address}" ${data.openstack_dns_zone_v2.project_zone.id} "$RECORD_ID"
-      else
-        echo "Creating new DNS record for ${local.fqdn}"
-        /home/zonca/zonca/p/software/jupyterhub-deploy-kubernetes-jetstream/.venv/bin/openstack recordset create --type A --record "${openstack_networking_floatingip_v2.ingress_fixed_ip.address}" ${data.openstack_dns_zone_v2.project_zone.id} "${local.fqdn}."
-      fi
-    EOT
-  }
+  zone_id  = data.openstack_dns_zone_v2.project_zone.id
+  name     = "${local.fqdn}."
+  type     = "A"
+  records  = [openstack_networking_floatingip_v2.ingress_fixed_ip.address]
+  ttl      = 3600
 }
 
 resource "null_resource" "install_cert_manager" {
-  depends_on = [null_resource.bind_fixed_ip_to_ingress_lb]
+  depends_on = [null_resource.bind_fixed_ip_to_traefik_lb]
 
   triggers = {
     cluster_id = module.kubernetes_cluster.cluster_id
-    version    = "v1.16.2"
+    version    = var.certmanager_version
   }
 
   provisioner "local-exec" {
@@ -171,16 +156,37 @@ resource "null_resource" "install_cert_manager" {
     command     = <<-EOT
       set -euo pipefail
       export KUBECONFIG="${module.kubernetes_cluster.kubeconfig_path}"
-      /home/zonca/zonca/p/software/jupyterhub-deploy-kubernetes-jetstream/.venv/bin/kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.16.2/cert-manager.yaml
-      /home/zonca/zonca/p/software/jupyterhub-deploy-kubernetes-jetstream/.venv/bin/kubectl -n cert-manager rollout status deployment/cert-manager --timeout=5m
-      /home/zonca/zonca/p/software/jupyterhub-deploy-kubernetes-jetstream/.venv/bin/kubectl -n cert-manager rollout status deployment/cert-manager-cainjector --timeout=5m
-      /home/zonca/zonca/p/software/jupyterhub-deploy-kubernetes-jetstream/.venv/bin/kubectl -n cert-manager rollout status deployment/cert-manager-webhook --timeout=5m
+      kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/${var.certmanager_version}/cert-manager.yaml
+      kubectl -n cert-manager rollout status deployment/cert-manager --timeout=5m
+      kubectl -n cert-manager rollout status deployment/cert-manager-cainjector --timeout=5m
+      kubectl -n cert-manager rollout status deployment/cert-manager-webhook --timeout=5m
+    EOT
+  }
+}
+
+resource "null_resource" "pin_certmanager_to_control_plane" {
+  depends_on = [null_resource.install_cert_manager]
+
+  triggers = {
+    cluster_id = module.kubernetes_cluster.cluster_id
+    patch_hash = filesha256("${path.module}/templates/deploymentPatch.yml")
+  }
+
+  provisioner "local-exec" {
+    interpreter = ["/bin/bash", "-lc"]
+    command     = <<-EOT
+      set -euo pipefail
+      export KUBECONFIG="${module.kubernetes_cluster.kubeconfig_path}"
+      for DEPLOYMENT in cert-manager cert-manager-cainjector cert-manager-webhook; do
+        kubectl -n cert-manager patch deployment "$DEPLOYMENT" --patch-file "${path.module}/templates/deploymentPatch.yml"
+        kubectl -n cert-manager rollout status deployment "$DEPLOYMENT" --timeout=5m
+      done
     EOT
   }
 }
 
 resource "null_resource" "install_cluster_issuer" {
-  depends_on = [null_resource.install_cert_manager, local_file.cluster_issuer]
+  depends_on = [null_resource.pin_certmanager_to_control_plane, local_file.cluster_issuer]
 
   triggers = {
     cluster_id     = module.kubernetes_cluster.cluster_id
@@ -192,14 +198,14 @@ resource "null_resource" "install_cluster_issuer" {
     command     = <<-EOT
       set -euo pipefail
       export KUBECONFIG="${module.kubernetes_cluster.kubeconfig_path}"
-      /home/zonca/zonca/p/software/jupyterhub-deploy-kubernetes-jetstream/.venv/bin/kubectl apply -f "${local_file.cluster_issuer.filename}"
+      kubectl apply -f "${local_file.cluster_issuer.filename}"
     EOT
   }
 }
 
 resource "null_resource" "install_jupyterhub" {
   depends_on = [
-    null_resource.manage_jhub_dns_record,
+    openstack_dns_recordset_v2.jhub_record,
     null_resource.install_cluster_issuer,
     local_file.jhub_secrets,
   ]
@@ -217,10 +223,10 @@ resource "null_resource" "install_jupyterhub" {
       set -euo pipefail
       export KUBECONFIG="${module.kubernetes_cluster.kubeconfig_path}"
 
-      /usr/local/bin/helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/
-      /usr/local/bin/helm repo update
+      helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/
+      helm repo update
 
-      /usr/local/bin/helm upgrade --install ${var.jhub_release_name} jupyterhub/jupyterhub \
+      helm upgrade --install ${var.jhub_release_name} jupyterhub/jupyterhub \
         --namespace ${var.jhub_namespace} \
         --create-namespace \
         --version ${var.jhub_chart_version} \

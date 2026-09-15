@@ -14,6 +14,6 @@ output "jupyterhub_url" {
 }
 
 output "ingress_fixed_ip" {
-  description = "Fixed floating IP bound to ingress-nginx"
+  description = "Fixed floating IP bound to Traefik load balancer"
   value       = openstack_networking_floatingip_v2.ingress_fixed_ip.address
 }

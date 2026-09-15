@@ -99,7 +99,7 @@ variable "jhub_namespace" {
 variable "jhub_chart_version" {
   description = "JupyterHub Helm chart version"
   type        = string
-  default     = "4.3.1"
+  default     = "4.4.1"
 }
 
 variable "jhub_values_file" {
@@ -108,16 +108,28 @@ variable "jhub_values_file" {
   default     = "../../config_standard_storage.yaml"
 }
 
-variable "ingress_release_name" {
-  description = "Helm release name for ingress-nginx"
+variable "traefik_release_name" {
+  description = "Helm release name for Traefik"
   type        = string
-  default     = "ingress-nginx"
+  default     = "traefik"
 }
 
-variable "ingress_namespace" {
-  description = "Namespace for ingress-nginx"
+variable "traefik_namespace" {
+  description = "Namespace for Traefik"
   type        = string
-  default     = "ingress-nginx"
+  default     = "traefik"
+}
+
+variable "traefik_chart_version" {
+  description = "Traefik Helm chart version"
+  type        = string
+  default     = "v41.5.0"
+}
+
+variable "certmanager_version" {
+  description = "cert-manager release version"
+  type        = string
+  default     = "v1.17.1"
 }
 
 variable "dns_zone_name" {

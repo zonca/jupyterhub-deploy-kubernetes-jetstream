@@ -26,6 +26,12 @@ resource "openstack_containerinfra_cluster_v1" "cluster" {
   lifecycle {
     ignore_changes = [labels]
   }
+
+  timeouts {
+    create = "4h"
+    update = "30m"
+    delete = "30m"
+  }
 }
 
 resource "local_file" "kubeconfig" {

@@ -1,0 +1,13 @@
+# Keep cert-manager pods on the control-plane node
+# See https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream/issues/52
+---
+spec:
+  template:
+    spec:
+      nodeSelector:
+        "node-role.kubernetes.io/control-plane": ""
+      tolerations:
+        - key: "node-role.kubernetes.io/master"
+          operator: "Exists"
+        - key: "node-role.kubernetes.io/control-plane"
+          operator: "Exists"

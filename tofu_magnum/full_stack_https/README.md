@@ -3,10 +3,10 @@
 This folder extends the base `tofu_magnum` recipe to deploy, in one OpenTofu apply:
 
 1. Magnum Kubernetes cluster
-2. `ingress-nginx` Helm release
-3. Fixed OpenStack floating IP attached to ingress load balancer
+2. Traefik Helm release
+3. Fixed OpenStack floating IP attached to Traefik load balancer
 4. Jetstream DNS A record for your subdomain
-5. `cert-manager` and `letsencrypt` ClusterIssuer
+5. `cert-manager` and `letsencrypt` ClusterIssuer (HTTP01 via Traefik)
 6. JupyterHub Helm release with ingress + TLS annotations
 
 ## Prerequisites
@@ -41,5 +41,5 @@ After apply, OpenTofu prints:
   - `config` (kubeconfig)
   - `rendered-secrets.yaml`
   - `rendered-https-cluster-issuer.yml`
-- The ingress floating IP rebind is performed with `openstack` CLI, following the same flow as the tutorial.
+- The Traefik floating IP rebind is performed with `openstack` CLI, following the same flow as the tutorial.
 - If your DNS zone name differs from `<project_id>.projects.jetstream-cloud.org.`, set `dns_zone_name` in `terraform.tfvars`.
