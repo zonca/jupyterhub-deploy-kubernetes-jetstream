@@ -1,0 +1,8 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: manila-cephfs
+provisioner: kubernetes.io/no-provisioner
+# Static PVs only: this StorageClass signals "pre-create volumes", so the
+# bound PVC is never dynamically provisioned (cephfs.csi.ceph.com rejects
+# PVC selectors, and no dynamic Manila provisioning is expected here).

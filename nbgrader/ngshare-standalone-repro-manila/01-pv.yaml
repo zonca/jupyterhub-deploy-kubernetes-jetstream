@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: ngshare-manila-pv
+  labels:
+    app: ngshare-manila
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  volumeMode: Filesystem
+  storageClassName: manila-cephfs
+  csi:
+    driver: cephfs.csi.ceph.com
+    volumeHandle: ngshare-manila-<SHARE_ID>
+    nodeStageSecretRef:
+      name: csi-cephfs-secret
+      namespace: kube-system
+    volumeAttributes:
+      clusterID: "manila-cephfs"
+      staticVolume: "true"
+      rootPath: "<SHARE_PATH>"
+      fsName: "cephfs"

@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ngshare-manila-repro-pvc
+  namespace: jhub
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: manila-cephfs
+  volumeMode: Filesystem
+  selector:
+    matchLabels:
+      app: ngshare-manila
