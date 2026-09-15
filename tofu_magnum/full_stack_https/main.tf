@@ -126,6 +126,7 @@ resource "null_resource" "bind_fixed_ip_to_traefik_lb" {
       EXISTING_FIP_ID=$(openstack floating ip list --port "$VIP_PORT_ID" -f value -c ID | head -n1 || true)
       if [ -n "$EXISTING_FIP_ID" ]; then
         openstack floating ip unset --port "$EXISTING_FIP_ID"
+        openstack floating ip delete "$EXISTING_FIP_ID"
       fi
 
       openstack floating ip set --port "$VIP_PORT_ID" "${openstack_networking_floatingip_v2.ingress_fixed_ip.address}"

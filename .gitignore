@@ -30,6 +30,6 @@ backup_volumes/RESTIC_REPOSITORY
 jetstream_kubespray/
 tfplan
 .terraform.tfstate.lock.info
+.venv/
 
-# Local values with secrets, do not commit
-*local*.yaml
+.venv/
